@@ -173,7 +173,7 @@ img.px, svg.px { image-rendering: pixelated; shape-rendering: crispEdges; }
 /* player idle: bob + breathe + slight sway */
 .bob { animation: bob 3.6s ease-in-out infinite; }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-.breathe { transform-origin: 50% 100%; animation: breathe 4.2s ease-in-out infinite; }
+.breathe { transform-origin: 50% 100%; animation: breathe 4.2s ease-in-out infinite; will-change: transform; }
 @keyframes breathe {
   0%, 100% { transform: scale(1, 1) rotate(0deg); }
   30% { transform: scale(1.006, 1.014) rotate(.4deg); }
@@ -183,6 +183,13 @@ img.px, svg.px { image-rendering: pixelated; shape-rendering: crispEdges; }
 .scroll-y { overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: #555 transparent; }
 .scroll-y::-webkit-scrollbar { width: 6px; }
 .scroll-y::-webkit-scrollbar-thumb { background: #555; }
+
+/* phones: keep the scene alive but drop the costliest layers */
+@media (max-width: 767px) {
+  .kenburns { animation: none; }
+  .amb-glint, .amb-haze { display: none; }
+  .amb-light:nth-of-type(2n) { display: none; }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .kenburns, .bob, .breathe, .splash, .amb-light, .amb-shaft, .amb-glint, .amb-haze { animation: none; }

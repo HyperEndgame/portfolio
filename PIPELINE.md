@@ -58,3 +58,8 @@ Graphify: none yet.
 - All src files valid UTF-8 (US-ASCII subset, Rails-safe).
 - None breaking.
 - Follow-up: photo fades in on load and Ambience waits for it (no lights over black on cold load); skill rows reflow on mobile (names no longer truncated).
+
+## Feature 5: mobile character, XP, petals, audio (2026-10-07)
+**Plan (Opus):** Character visible on mobile (centered band above a bottom sheet at 38vh; top-right on menu/end). XP fixed: level 15, 10/12. Slot 3 off end.webp → cherry-grove purple grade ("Enchanted Grove"). Petals: pre-rendered notched-petal sprites, 15–26px, spin+flip tumble. Audio: real Minecraft sounds/music are Mojang-copyrighted → original generative ambient piano (Web Audio, starts on first gesture, M toggles) + softer clicks. Mobile perf: particles 1/3 count @30fps, no Ken Burns/glints/haze, half the lights, no drop-shadow; menu renders without entry animation.
+**Code:** sound.js (music), Particles (petal sprites, mobile throttle), Player (mobile placement), App (sheet top, fixed XP, initial={false}), data.js slot 3, Screens (menu static, profile head desktop-only), index.css mobile media query.
+**Haiku findings:** (pending)

@@ -28,23 +28,24 @@ export const Btn = ({ children, onClick, className = '' }) => (
 export function Menu({ go }) {
   return (
     <div className="flex w-full max-w-[640px] flex-col items-center text-center">
-      <m.div className="relative mb-2" initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, ease: [0.22, 1, 0.36, 1] }}>
+      <div className="relative mb-2">
         <h1 className="logo whitespace-nowrap text-[clamp(34px,6vw,76px)] leading-none">{me.name} Builds</h1>
         <span className="splash ts absolute -top-6 right-0 whitespace-nowrap text-[11px] sm:top-auto sm:-right-14 sm:bottom-1 sm:text-[15px]">
           Now with 100% more blocks!
         </span>
-      </m.div>
+      </div>
       <p className="ts mb-9 mt-4 text-[12px] tracking-[.35em] text-[#bdbdbd]">SURVIVAL · HARD MODE</p>
-      <Stagger className="flex w-full max-w-[440px] flex-col gap-2.5">
-        <Item><Btn className="w-full" onClick={() => go(2)}>Enter World</Btn></Item>
-        <Item><Btn className="w-full" onClick={() => go(4)}>View Builds</Btn></Item>
-        <Item><Btn className="w-full" onClick={() => go(7)}>Villager Trades</Btn></Item>
-        <Item className="grid grid-cols-2 gap-2.5">
+      <div className="flex w-full max-w-[440px] flex-col gap-2.5">
+        <Btn className="w-full" onClick={() => go(2)}>Enter World</Btn>
+        <Btn className="w-full" onClick={() => go(4)}>View Builds</Btn>
+        <Btn className="w-full" onClick={() => go(7)}>Villager Trades</Btn>
+        <div className="grid grid-cols-2 gap-2.5">
           <Btn onClick={() => go(8)}>Contact</Btn>
           <Btn onClick={() => go(9)}>The End</Btn>
-        </Item>
-        <Item><Btn className="w-full" onClick={() => go(6)}>Advancements</Btn></Item>
-      </Stagger>
+        </div>
+        
+        <Btn className="w-full" onClick={() => go(6)}>Advancements</Btn>
+      </div>
       <p className="ts mt-4 text-[11px] text-[#bdbdbd]">Press 1-9 or click the hotbar</p>
     </div>
   )
@@ -55,7 +56,7 @@ export function Profile({ go }) {
     <>
       <Title>Player Profile</Title>
       <div className="flex flex-col gap-5 sm:flex-row">
-        <div className="slot-dark grid h-[132px] w-[132px] shrink-0 place-items-center self-center overflow-hidden sm:self-start">
+        <div className="slot-dark hidden h-[132px] w-[132px] shrink-0 place-items-center self-start overflow-hidden md:grid">
           <img src={me.head} alt={`${me.full}'s character`} className="px w-[86%]" />
         </div>
         <div className="flex-1">

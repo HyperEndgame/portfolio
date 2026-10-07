@@ -86,7 +86,7 @@ function usePreload() {
   }, [])
 }
 
-// XP + advancement toasts for exploring new screens
+// advancement toasts for exploring new screens
 function useProgress(slot) {
   const [seen, setSeen] = useState(() => new Set([1]))
   const [toast, setToast] = useState(null)
@@ -103,7 +103,7 @@ function useProgress(slot) {
     const id = setTimeout(() => setToast(null), 3800)
     return () => clearTimeout(id)
   }, [toast])
-  return { level: 3 + seen.size * 3, xp: seen.size / 9, toast }
+  return { toast }
 }
 
 const NEAR = new Set(['petals', 'fireflies', 'embers', 'glyphs', 'end'])
@@ -127,7 +127,7 @@ export default function App() {
   useWheel(cycle)
   useSwipe(cycle)
   usePreload()
-  const { level, xp, toast } = useProgress(slot)
+  const { toast } = useProgress(slot)
 
   const b = biomes[slot], L = LAYOUT[slot]
   const screens = {
@@ -143,16 +143,16 @@ export default function App() {
       <main className="relative h-full w-full select-none overflow-hidden">
         <Background biome={b} side={L.panel} />
         <Particles fx={b.fx} />
-        {L.view && <Player view={L.view} side={L.side} slot={slot} />}
+        {L.view && <Player view={L.view} side={L.side} slot={slot} center={!boxed} />}
 
         <Info biome={b} />
         {debug && <Debug biome={b} slot={slot} />}
         <SoundToggle on={sound} toggle={toggleSound} />
 
-        <AnimatePresence mode="wait">
+        <AnimatePresence mode="wait" initial={false}>
           {boxed ? (
             <m.section key={slot} data-scroll aria-label={b.name}
-              className={`${slot === 8 ? 'book' : 'panel'} scroll-y fixed inset-x-3 bottom-[150px] top-[84px] z-[45] p-5 md:absolute md:inset-x-auto md:bottom-auto md:top-[15vh] md:max-h-[calc(85vh-190px)] md:p-6 ${PANEL_POS[L.panel]}`}
+              className={`${slot === 8 ? 'book' : 'panel'} scroll-y fixed inset-x-3 bottom-[150px] ${L.view ? 'top-[38vh]' : 'top-[84px]'} z-[45] p-5 md:absolute md:inset-x-auto md:bottom-auto md:top-[15vh] md:max-h-[calc(85vh-190px)] md:p-6 ${PANEL_POS[L.panel]}`}
               initial={{ opacity: 0, x: enter }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: enter / 2 }}
@@ -161,7 +161,7 @@ export default function App() {
             </m.section>
           ) : (
             <m.section key={slot} aria-label={b.name}
-              className={`absolute inset-x-0 top-0 bottom-[150px] z-30 flex items-center justify-center px-4 ${slot === 1 ? 'md:pr-[22vw]' : 'md:pr-[18vw]'}`}
+              className={`absolute inset-x-0 top-0 bottom-[150px] z-30 flex items-center justify-center px-4 pt-[22vh] md:pt-0 ${slot === 1 ? 'md:pr-[22vw]' : 'md:pr-[18vw]'}`}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .3 }}>
               {screens[slot]}
             </m.section>
@@ -169,7 +169,7 @@ export default function App() {
         </AnimatePresence>
 
         {FINE && NEAR.has(b.fx) && <Particles fx={b.fx} near />}
-        <Hotbar slot={slot} go={go} level={level} xp={xp} />
+        <Hotbar slot={slot} go={go} level={15} xp={10 / 12} />
         <Toast toast={toast} />
 
         <p className="ts-sm pointer-events-none absolute bottom-2 left-3 z-20 hidden text-[10px] text-white/45 lg:block">

@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react'
 
 const FX = {
-  petals: { n: 55, c: ['#ffc4dd', '#ff9fc7', '#ffe1ee', '#f7b0d0'], vx: [.5, 1.3], vy: [.5, 1.1], s: [4, 7], kind: 'petal' },
+  petals: { n: 42, c: ['#ffb7d2', '#ff9ec4', '#ffd0e2', '#f6a8c8'], vx: [.4, 1.2], vy: [.5, 1.1], s: [15, 26], kind: 'petal' },
   fireflies: { n: 38, c: ['#ffe27a', '#fff2b0', '#ffd04a'], vx: [-.25, .25], vy: [-.3, .1], s: [2, 3], kind: 'glow' },
   embers: { n: 30, c: ['#ffb35c', '#ffd28a', '#ff8a3a'], vx: [-.2, .2], vy: [-.5, -.15], s: [2, 3], kind: 'glow' },
   motes: { n: 40, c: ['#ffffff', '#fff6d8'], vx: [-.15, .25], vy: [-.12, .12], s: [2, 3], kind: 'glow' },
@@ -14,6 +14,27 @@ const FX = {
 const RUNES = ['111101111', '010111010', '110011110', '101010101', '111100111', '011110011', '100111001', '010101111']
 
 const rand = ([a, b]) => a + Math.random() * (b - a)
+
+// pre-rendered cherry petal: notched teardrop, pale tip to pink base, centre vein
+const sprites = {}
+function petal(color) {
+  if (sprites[color]) return sprites[color]
+  const c = document.createElement('canvas'), x = c.getContext('2d')
+  c.width = c.height = 32
+  const g = x.createLinearGradient(16, 2, 16, 30)
+  g.addColorStop(0, '#fff3f8'); g.addColorStop(.55, color); g.addColorStop(1, '#e77fa8')
+  x.fillStyle = g
+  x.beginPath()
+  x.moveTo(16, 30)
+  x.bezierCurveTo(3, 22, 3, 7, 10, 2)
+  x.quadraticCurveTo(13, 2, 16, 7)
+  x.quadraticCurveTo(19, 2, 22, 2)
+  x.bezierCurveTo(29, 7, 29, 22, 16, 30)
+  x.fill()
+  x.strokeStyle = 'rgba(255,255,255,.45)'; x.lineWidth = 1
+  x.beginPath(); x.moveTo(16, 27); x.quadraticCurveTo(15, 18, 16, 10); x.stroke()
+  return (sprites[color] = c)
+}
 
 function spawn(cfg, w, h, fresh) {
   const up = cfg.vy[1] <= 0
@@ -29,11 +50,13 @@ function spawn(cfg, w, h, fresh) {
 function draw(cx, cfg, p, t) {
   cx.fillStyle = p.c
   if (cfg.kind === 'petal') {
-    cx.save(); cx.translate(p.x, p.y); cx.rotate(p.rot + t * .8)
-    cx.globalAlpha = .9
-    cx.fillRect(-p.s / 2, -p.s / 4, p.s, p.s / 2)
-    cx.fillRect(-p.s / 4, -p.s / 2, p.s / 2, p.s)
-    cx.restore()
+    // spin + flip on one axis = tumbling petal
+    cx.setTransform(1, 0, 0, 1, p.x, p.y)
+    cx.rotate(p.rot + t * (.6 + p.p * .1))
+    cx.scale(Math.cos(t * 1.7 + p.p), 1)
+    cx.globalAlpha = .95
+    cx.drawImage(petal(p.c), -p.s / 2, -p.s / 2, p.s, p.s)
+    cx.setTransform(1, 0, 0, 1, 0, 0)
     return
   }
   if (cfg.kind === 'glyph') {
@@ -65,18 +88,23 @@ export default function Particles({ fx, near = false }) {
     }
     size()
     addEventListener('resize', size)
-    const ps = Array.from({ length: w < 700 ? cfg.n >> 1 : cfg.n }, () => spawn(cfg, w, h, true))
+    const small = w < 768
+    const ps = Array.from({ length: small ? Math.ceil(cfg.n / 3) : cfg.n }, () => spawn(cfg, w, h, true))
+    // phones: draw at 30fps, move twice as far per frame
+    const k = small ? 2 : 1
+    let frame = 0
     const tick = () => {
-      t += 1 / 60
+      raf = requestAnimationFrame(tick)
+      if (small && frame++ % 2) return
+      t += k / 60
       cx.clearRect(0, 0, w, h)
       for (const p of ps) {
-        p.x += p.vx + Math.sin(t + p.p) * .35
-        p.y += p.vy
+        p.x += (p.vx + Math.sin(t + p.p) * .35) * k
+        p.y += p.vy * k
         if (p.y > h + 30 || p.y < -30 || p.x > w + 30 || p.x < -30) Object.assign(p, spawn(cfg, w, h, false))
         draw(cx, cfg, p, t)
       }
       cx.globalAlpha = 1
-      raf = requestAnimationFrame(tick)
     }
     tick()
     return () => { cancelAnimationFrame(raf); removeEventListener('resize', size) }
