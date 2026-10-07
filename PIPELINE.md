@@ -62,4 +62,9 @@ Graphify: none yet.
 ## Feature 5: mobile character, XP, petals, audio (2026-10-07)
 **Plan (Opus):** Character visible on mobile (centered band above a bottom sheet at 38vh; top-right on menu/end). XP fixed: level 15, 10/12. Slot 3 off end.webp → cherry-grove purple grade ("Enchanted Grove"). Petals: pre-rendered notched-petal sprites, 15–26px, spin+flip tumble. Audio: real Minecraft sounds/music are Mojang-copyrighted → original generative ambient piano (Web Audio, starts on first gesture, M toggles) + softer clicks. Mobile perf: particles 1/3 count @30fps, no Ken Burns/glints/haze, half the lights, no drop-shadow; menu renders without entry animation.
 **Code:** sound.js (music), Particles (petal sprites, mobile throttle), Player (mobile placement), App (sheet top, fixed XP, initial={false}), data.js slot 3, Screens (menu static, profile head desktop-only), index.css mobile media query.
-**Haiku findings:** (pending)
+**Haiku findings:**
+- src/components/Player.jsx:13 — AnimatePresence key `view + side + (slot === 1)` doesn't change on slots 2→3→4 transitions (all 'frontrightFalse'), so Player doesn't animate between them — minor (animations skip but content renders correctly).
+- src/sound.js, src/components/Particles.jsx, src/App.jsx, src/components/Screens.jsx, src/data.js — all valid. Build passes, no breaking issues found.
+- All src files valid UTF-8, gesture listener cleanup correct (self-removing), RAF re-queue/cancel pair matched, Particles mobile 30fps throttle correct (skip draw not RAF), data.js slot 3 matches plan (cherry-grove, glyphs, purple).
+- None breaking.
+- Player key reuse across slots 2-4 is intentional: character stays put when only the panel changes.
