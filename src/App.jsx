@@ -141,7 +141,7 @@ export default function App() {
     <TipProvider reset={slot}>
       <main className="relative h-full w-full overflow-hidden">
         <Background biome={b} side={L.panel} parallax={slot === 1} />
-        <Particles fx={b.fx} />
+        {b.fx && <Particles fx={b.fx} />}
         {L.view && <Player view={L.view} side={L.side} slot={slot} center={!boxed} />}
 
         <Info biome={b} />

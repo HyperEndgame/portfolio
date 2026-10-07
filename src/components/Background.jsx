@@ -44,28 +44,36 @@ function cover({ w, h }, [iw, ih], pos, zoom) {
 }
 
 // photo fades in once decoded; its ambience waits so lights never float over black
-function Photo({ src, filter, scene, onReady }) {
+// (a biome with `video` plays it muted on loop, its photo as the poster)
+function Photo({ src, video, filter, scene, onReady }) {
   const [ready, setReady] = useState(false)
   const ref = useRef()
-  useEffect(() => { if (ref.current?.complete) setReady(true) }, [])
-  useEffect(() => { if (ready) onReady?.() }, [ready])
+  useEffect(() => { if (ref.current?.complete || ref.current?.readyState >= 2) setReady(true) }, [])
+  useEffect(() => {
+    if (!ready) return
+    onReady?.()
+    ref.current.play?.().catch(() => {}) // autoplay attribute alone is flaky on some desktop browsers
+  }, [ready])
   return (
     <>
-      <img ref={ref} src={photo(src)}
-        alt="" decoding="async" draggable="false" onLoad={() => setReady(true)}
-        className={`h-full w-full transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`} style={{ filter }} />
+      {video
+        ? <video ref={ref} src={photo(video)} poster={photo(src)} autoPlay muted loop playsInline preload="auto"
+          onLoadedData={() => setReady(true)} className={`h-full w-full object-cover transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`} />
+        : <img ref={ref} src={photo(src)}
+          alt="" decoding="async" draggable="false" onLoad={() => setReady(true)}
+          className={`h-full w-full transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`} style={{ filter }} />}
       {ready && <Ambience scene={scene} />}
     </>
   )
 }
 
 function Layer({ biome, size, onReady }) {
-  const { src, pos = '50% 50%', zoom = 1, filter = 'none' } = biome
+  const { src, video, pos = '50% 50%', zoom = 1, filter = 'none' } = biome
   const scene = scenes[src.split('/').pop()] || { size: [1920, 1080] }
   return (
-    <div className="kenburns absolute inset-0" style={{ transformOrigin: pos }}>
+    <div className={`${video ? '' : 'kenburns'} absolute inset-0`} style={{ transformOrigin: pos }}>
       <div className="absolute" style={cover(size, scene.size, pos, zoom)}>
-        <Photo src={src} filter={filter} scene={scene} onReady={onReady} />
+        <Photo src={src} video={video} filter={filter} scene={scene} onReady={onReady} />
       </div>
     </div>
   )

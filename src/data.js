@@ -3,8 +3,8 @@ import * as I from './icons'
 
 const img = (f) => `${import.meta.env.BASE_URL}img/${f}`
 
-// phones get the 1280px photos (portrait crops are blurred/filtered anyway); desktop gets 1920px
-export const photo = (src) => innerWidth < 768 ? src.replace('.webp', '-1280.webp') : src
+// phones get the 1280px photos/videos (portrait crops are blurred/filtered anyway); desktop gets 1920px
+export const photo = (src) => innerWidth < 768 ? src.replace(/\.(webp|mp4)$/, '-1280.$1') : src
 
 export const me = {
   name: 'Rohtak',
@@ -70,7 +70,7 @@ export const scenes = {
 
 // Per-slot scene. pos/zoom/filter let one photo serve two biomes.
 export const biomes = {
-  1: { name: 'Cherry Valley', color: '#ff9ccf', src: img('cherry-river.webp'), fx: 'petals' },
+  1: { name: 'Cherry Valley', color: '#ff9ccf', src: img('home.webp'), video: img('home.mp4') },
   2: { name: 'Cherry Grove', color: '#ff9ccf', src: img('cherry-grove.webp'), fx: 'petals' },
   3: { name: 'Enchanted Grove', color: '#c79bff', src: img('cherry-grove.webp'), pos: '30% 35%', zoom: 1.45, filter: 'hue-rotate(-28deg) saturate(1.15) brightness(.62)', fx: 'glyphs' },
   4: { name: 'Lush Caves', color: '#7dffb0', src: img('lush-caves.webp'), pos: '12% 55%', zoom: 1.35, fx: 'fireflies' },
