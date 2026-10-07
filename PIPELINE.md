@@ -45,4 +45,15 @@ Graphify: none yet.
 ## Feature 4: audit + perf + mobile (2026-10-07)
 **Plan (Opus):** Apply ponytail audit (dead Google Fonts, dead tailwind extends, unused palette icon + hit/break sounds, Pixel string branch, lucide → 6 inline SVGs). Perf: drop backdrop-filter, blur filters, mix-blend; shafts → soft radial gradients; near particle layer desktop-only w/o CSS blur; 1x canvas; LazyMotion+domAnimation (layoutId selector → CSS left transition); 1280w srcset + preload. Mobile: tooltips off on touch (stuck after tap), dedicated head crop for Profile, swipe to change slot, touch-action/overscroll, splash moved off subtitle.
 **Code:** Ico.jsx (new), Pixel, Hud, Screens, App (useSwipe, usePreload, LazyMotion), Background (srcset, scene guard), Particles, Tooltip, Ambience, index.css, data.js, icons.py, public/img (*-1280.webp, player-head.png). JS 310→265 KB. Lush Caves 91 fps (refresh-capped).
-**Haiku findings:** (pending)
+**Haiku findings:**
+- No `motion.` usage (strict LazyMotion mode — all `m.*` framer-motion components correct).
+- No lucide-react imports (Ico.jsx 6 inline SVGs verified).
+- All Ico names used exist: arrow, check, copy, external, volume, mute.
+- srcSet 1280w files exist for all 5 biomes (cherry-river/-grove, end, lush-caves, village).
+- player-head.png exists; `me.head` used in Screens Profile.
+- Hotbar selector calc correct for 9 slots: (100%-22px)/9 per slot, 2px gaps, 3px padding, ±5px border offset.
+- useSwipe/usePreload event listeners cleaned up in return statements.
+- Tooltip returns {} on touch — no spread errors (ternary binds={} : {...}).
+- `npm run build` passes: 265 KB JS, 25 KB CSS.
+- All src files valid UTF-8 (US-ASCII subset, Rails-safe).
+- None breaking.
