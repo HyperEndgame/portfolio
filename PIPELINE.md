@@ -28,3 +28,8 @@ Graphify: none yet.
 ## Fix: Railway deploy failed (2026-10-07)
 - Cause: `scripts/icons.py` wrote `src/icons.js` with Windows cp1252 (em dash in header) → nixpacks "stream did not contain valid UTF-8".
 - Fix: `write_text(..., encoding='utf-8')`. Always write generated files as UTF-8.
+
+## Feature 3: video-style ambience (2026-10-07)
+**Plan (Opus):** Reference backgrounds are AI video loops (pulsing light sources, light shafts, glints, depth petals, idle character). Fake it over stills: `Ambience.jsx` renders lights/shafts/glints/haze pinned in image-% coords; `Background.jsx` computes object-fit:cover box so overlays track the photo through crop/zoom/Ken Burns. `scenes` in data.js holds per-photo anchors. Near-layer blurred Particles for depth. Player bob + breathe/sway.
+**Code:** Ambience.jsx (new), Background.jsx (cover math), data.js `scenes`, index.css amb-* keyframes, Particles `near` prop, App NEAR set, Player breathe.
+**Haiku findings:** (pending)

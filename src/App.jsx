@@ -81,6 +81,8 @@ function useProgress(slot) {
   return { level: 3 + seen.size * 3, xp: seen.size / 9, toast }
 }
 
+const NEAR = new Set(['petals', 'fireflies', 'embers', 'glyphs', 'end'])
+
 const PANEL_POS = {
   left: 'md:left-[5vw] md:w-[min(540px,46vw)]',
   right: 'md:right-[5vw] md:w-[min(500px,44vw)]',
@@ -137,6 +139,7 @@ export default function App() {
           )}
         </AnimatePresence>
 
+        {NEAR.has(b.fx) && <Particles fx={b.fx} near />}
         <Hotbar slot={slot} go={go} level={level} xp={xp} />
         <Toast toast={toast} />
 

@@ -23,16 +23,55 @@ export const me = {
   avatarBack: img('player-back.png'),
 }
 
+// Motion pinned inside each photo (x/y in % of the image).
+// lights: [x, y, size(vmin), color]  shafts: rays from a point  glints: twinkles in a region
+const BERRY = 'rgba(255,190,70,.85)'
+export const scenes = {
+  'lush-caves.webp': {
+    size: [1920, 1071],
+    shafts: [{ x: 52, y: 14, from: -16, to: 14, n: 6, len: 62, w: 3, color: 'rgba(255,250,220,.30)' }],
+    lights: [[6, 14, 7, BERRY], [12, 18, 6, BERRY], [7, 23, 6, BERRY], [12, 27, 6, BERRY], [25, 18, 6, BERRY], [29, 13, 7, BERRY],
+      [33, 16, 6, BERRY], [36, 12, 6, BERRY], [24, 33, 6, BERRY], [26, 41, 6, BERRY], [33, 40, 5, BERRY], [65, 18, 6, BERRY],
+      [64, 24, 5, BERRY], [69, 40, 6, BERRY], [86, 28, 7, BERRY], [91, 24, 7, BERRY], [92, 33, 6, BERRY], [60, 42, 5, BERRY],
+      [44, 58, 12, 'rgba(200,255,150,.45)']],
+    glints: [{ x: 38, y: 64, w: 26, h: 26, n: 22, color: '#dff6ff' }],
+  },
+  'cherry-river.webp': {
+    size: [1920, 1027],
+    shafts: [{ x: 50, y: 38, from: -70, to: 70, n: 9, len: 70, w: 4, color: 'rgba(255,225,180,.22)' }],
+    lights: [[50, 38, 40, 'rgba(255,220,170,.55)']],
+    glints: [{ x: 6, y: 62, w: 38, h: 32, n: 28, color: '#fff3e0' }],
+  },
+  'cherry-grove.webp': {
+    size: [1920, 1080],
+    shafts: [{ x: 8, y: -6, from: -40, to: -10, n: 5, len: 90, w: 5, color: 'rgba(255,250,225,.16)' }],
+    glints: [{ x: 0, y: 66, w: 100, h: 30, n: 18, color: '#fff7c8' }],
+  },
+  'village.webp': {
+    size: [1920, 1080],
+    shafts: [{ x: 47, y: 6, from: -55, to: 55, n: 8, len: 80, w: 4, color: 'rgba(255,255,240,.20)' }],
+    lights: [[47, 8, 45, 'rgba(255,255,235,.5)']],
+    glints: [{ x: 44, y: 46, w: 5, h: 18, n: 14, color: '#ffffff' }],
+  },
+  'end.webp': {
+    size: [1920, 1080],
+    haze: 'linear-gradient(90deg, transparent, rgba(190,110,255,.18), transparent)',
+    lights: [[60, 38, 55, 'rgba(170,90,255,.35)'], [16, 50, 8, 'rgba(255,240,255,.7)'], [21, 44, 8, 'rgba(255,240,255,.6)'],
+      [26, 52, 7, 'rgba(255,240,255,.6)'], [37, 66, 9, 'rgba(210,90,255,.7)'], [70, 68, 9, 'rgba(210,90,255,.7)'], [80, 72, 9, 'rgba(210,90,255,.7)']],
+    glints: [{ x: 0, y: 0, w: 100, h: 30, n: 30, color: '#e8d0ff' }, { x: 13, y: 32, w: 16, h: 36, n: 18, color: '#fff' }],
+  },
+}
+
 // Per-slot scene. pos/zoom/filter let one photo serve two biomes.
 export const biomes = {
-  1: { name: 'Cherry Valley', color: '#ff9ccf', src: img('cherry-river.webp'), fx: 'petals', rays: true },
+  1: { name: 'Cherry Valley', color: '#ff9ccf', src: img('cherry-river.webp'), fx: 'petals' },
   2: { name: 'Cherry Grove', color: '#ff9ccf', src: img('cherry-grove.webp'), fx: 'petals' },
   3: { name: 'Enchanted Isles', color: '#c79bff', src: img('end.webp'), pos: '72% 45%', zoom: 1.3, filter: 'saturate(1.15) brightness(.82)', fx: 'glyphs' },
   4: { name: 'Dripstone Caves', color: '#ffb35c', src: img('lush-caves.webp'), pos: '12% 55%', zoom: 1.35, filter: 'sepia(.35) saturate(1.2) brightness(.72)', fx: 'embers' },
-  5: { name: 'Windswept Peaks', color: '#9fd6ff', src: img('village.webp'), pos: '50% 20%', zoom: 1.18, fx: 'motes', rays: true },
+  5: { name: 'Windswept Peaks', color: '#9fd6ff', src: img('village.webp'), pos: '50% 20%', zoom: 1.18, fx: 'motes' },
   6: { name: 'Twilight River', color: '#7fd8ff', src: img('cherry-river.webp'), pos: '85% 75%', zoom: 1.4, filter: 'brightness(.55) saturate(.85) hue-rotate(-12deg)', fx: 'fireflies' },
   7: { name: 'Village', color: '#7dff7d', src: img('village.webp'), pos: '40% 70%', fx: 'motes' },
-  8: { name: 'Lush Caves', color: '#7dffb0', src: img('lush-caves.webp'), fx: 'fireflies', rays: true },
+  8: { name: 'Lush Caves', color: '#7dffb0', src: img('lush-caves.webp'), fx: 'fireflies' },
   9: { name: 'The End', color: '#e3a6ff', src: img('end.webp'), fx: 'end' },
 }
 

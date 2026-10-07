@@ -49,11 +49,13 @@ function draw(cx, cfg, p, t) {
   cx.fillRect(p.x, p.y, p.s, p.s)
 }
 
-export default function Particles({ fx }) {
+export default function Particles({ fx, near = false }) {
   const ref = useRef()
   useEffect(() => {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    const cfg = FX[fx], cv = ref.current, cx = cv.getContext('2d')
+    const base = FX[fx], cv = ref.current, cx = cv.getContext('2d')
+    // near layer: a few big, fast, out-of-focus particles for depth
+    const cfg = near ? { ...base, n: base.n / 4 | 0, s: base.s.map(v => v * 2.6), vx: base.vx.map(v => v * 1.8), vy: base.vy.map(v => v * 1.8) } : base
     let w, h, raf, t = 0
     const size = () => {
       const d = Math.min(devicePixelRatio || 1, 2)
@@ -78,6 +80,6 @@ export default function Particles({ fx }) {
     }
     tick()
     return () => { cancelAnimationFrame(raf); removeEventListener('resize', size) }
-  }, [fx])
-  return <canvas ref={ref} className="pointer-events-none absolute inset-0 z-10 h-full w-full" aria-hidden="true" />
+  }, [fx, near])
+  return <canvas ref={ref} className={`pointer-events-none absolute inset-0 h-full w-full ${near ? 'z-[46] opacity-70 blur-[3px]' : 'z-10'}`} aria-hidden="true" />
 }

@@ -14,7 +14,7 @@ export default function Player({ view = 'front', side = 'right', slot }) {
           exit={{ opacity: 0, x: side === 'left' ? -20 : 20 }}
           transition={{ duration: .45, ease: [0.22, 1, 0.36, 1] }}>
           <div className="absolute -bottom-2 left-1/2 h-5 w-[80%] -translate-x-1/2 rounded-[50%] bg-black/50 blur-md" />
-          <img src={src} alt="" draggable="false" className="px bob relative h-full w-auto drop-shadow-[0_12px_24px_rgba(0,0,0,.45)]" />
+          <div className="bob relative h-full"><img src={src} alt="" draggable="false" className="px breathe h-full w-auto drop-shadow-[0_12px_24px_rgba(0,0,0,.45)]" /></div>
         </motion.div>
       </AnimatePresence>
     </div>

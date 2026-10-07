@@ -142,22 +142,48 @@ img.px, svg.px { image-rendering: pixelated; shape-rendering: crispEdges; }
   from { transform: scale(1.04) translate3d(0, 0, 0); }
   to { transform: scale(1.12) translate3d(-1.5%, -1%, 0); }
 }
-.rays {
-  background: repeating-conic-gradient(from 200deg at 55% -10%, rgba(255, 244, 214, .0) 0deg 5deg, rgba(255, 244, 214, .07) 6deg 9deg, rgba(255, 244, 214, 0) 10deg 16deg);
-  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, .4) 55%, transparent 85%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, .4) 55%, transparent 85%);
-  mix-blend-mode: screen;
-  animation: rays 9s ease-in-out infinite alternate;
+/* anchored ambience (fake video loop) */
+.amb-light {
+  position: absolute; transform: translate(-50%, -50%); border-radius: 50%;
+  mix-blend-mode: screen; animation: amb-pulse ease-in-out infinite alternate;
 }
-@keyframes rays { from { opacity: .55; } to { opacity: 1; } }
+@keyframes amb-pulse {
+  from { opacity: .35; transform: translate(-50%, -50%) scale(.85); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1.12); }
+}
+.amb-shaft {
+  position: absolute; transform-origin: top center; filter: blur(10px);
+  mix-blend-mode: screen; animation: amb-shaft ease-in-out infinite alternate;
+}
+@keyframes amb-shaft { from { opacity: .25; } to { opacity: 1; } }
+.amb-glint {
+  position: absolute; width: 4px; height: 4px; box-shadow: 0 0 8px 2px rgba(255, 255, 255, .55);
+  opacity: 0; animation: amb-glint ease-in-out infinite;
+}
+@keyframes amb-glint {
+  0%, 100% { opacity: 0; transform: scale(.3); }
+  50% { opacity: 1; transform: scale(1); }
+}
+.amb-haze {
+  position: absolute; inset: 15% -50% 35%; filter: blur(30px);
+  mix-blend-mode: screen; animation: amb-haze 26s linear infinite;
+}
+@keyframes amb-haze { from { transform: translateX(-30%); } to { transform: translateX(30%); } }
 
+/* player idle: bob + breathe + slight sway */
 .bob { animation: bob 3.6s ease-in-out infinite; }
-@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+@keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+.breathe { transform-origin: 50% 100%; animation: breathe 4.2s ease-in-out infinite; }
+@keyframes breathe {
+  0%, 100% { transform: scale(1, 1) rotate(0deg); }
+  30% { transform: scale(1.006, 1.014) rotate(.4deg); }
+  70% { transform: scale(.998, 1.004) rotate(-.4deg); }
+}
 
 .scroll-y { overflow-y: auto; scrollbar-width: thin; scrollbar-color: #555 transparent; }
 .scroll-y::-webkit-scrollbar { width: 6px; }
 .scroll-y::-webkit-scrollbar-thumb { background: #555; }
 
 @media (prefers-reduced-motion: reduce) {
-  .kenburns, .rays, .bob, .splash { animation: none; }
+  .kenburns, .bob, .breathe, .splash, .amb-light, .amb-shaft, .amb-glint, .amb-haze { animation: none; }
 }

@@ -1,6 +1,8 @@
-// Full-bleed biome photo: crossfade + Ken Burns + mouse parallax + light rays.
-import { useEffect, useRef } from 'react'
+// Full-bleed biome photo: crossfade + Ken Burns + mouse parallax + anchored ambience.
+import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import Ambience from './Ambience'
+import { scenes } from '../data'
 
 function useParallax() {
   const ref = useRef()
@@ -21,9 +23,32 @@ function useParallax() {
   return ref
 }
 
+function useSize() {
+  const [s, setS] = useState({ w: innerWidth, h: innerHeight })
+  useEffect(() => {
+    const r = () => setS({ w: innerWidth, h: innerHeight })
+    addEventListener('resize', r)
+    return () => removeEventListener('resize', r)
+  }, [])
+  return s
+}
+
+// CSS object-fit: cover math, so overlays can be pinned to image coordinates
+// (container is 48px larger than the viewport: parallax bleed)
+function cover({ w, h }, [iw, ih], pos, zoom) {
+  const [px, py] = pos.split(' ').map(v => parseFloat(v) / 100)
+  const W = w + 48, H = h + 48
+  const k = Math.max(W / iw, H / ih) * zoom
+  const dw = iw * k, dh = ih * k
+  return { width: dw, height: dh, left: (W - dw) * px, top: (H - dh) * py }
+}
+
 export default function Background({ biome, side }) {
   const par = useParallax()
-  const { src, pos = '50% 50%', zoom = 1, filter = 'none', rays } = biome
+  const size = useSize()
+  const { src, pos = '50% 50%', zoom = 1, filter = 'none' } = biome
+  const scene = scenes[src.split('/').pop()]
+  const box = cover({ w: size.w, h: size.h }, scene.size, pos, zoom)
   const shade = side === 'right'
     ? 'linear-gradient(270deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.15) 45%, transparent 70%)'
     : 'linear-gradient(90deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.15) 45%, transparent 70%)'
@@ -32,19 +57,19 @@ export default function Background({ biome, side }) {
       <div ref={par} className="absolute -inset-6 transition-transform duration-300 ease-out">
         <AnimatePresence initial={false}>
           <motion.div key={src + pos} className="absolute inset-0"
-            initial={{ opacity: 0, scale: 1.04, filter: 'blur(8px)' }}
-            animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+            initial={{ opacity: 0, scale: 1.04 }}
+            animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}>
-            <div className="kenburns absolute inset-0">
-              <img src={src} alt="" decoding="async" draggable="false"
-                className="h-full w-full object-cover"
-                style={{ objectPosition: pos, transform: `scale(${zoom})`, transformOrigin: pos, filter }} />
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}>
+            <div className="kenburns absolute inset-0" style={{ transformOrigin: pos }}>
+              <div className="absolute" style={box}>
+                <img src={src} alt="" decoding="async" draggable="false" className="h-full w-full" style={{ filter }} />
+                <Ambience scene={scene} />
+              </div>
             </div>
           </motion.div>
         </AnimatePresence>
       </div>
-      {rays && <div className="rays pointer-events-none absolute inset-0" />}
       <div className="pointer-events-none absolute inset-0 transition-[background] duration-700" style={{ background: shade }} />
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,.55)_100%)]" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/70 to-transparent" />
