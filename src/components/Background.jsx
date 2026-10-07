@@ -44,6 +44,13 @@ function cover({ w, h }, [iw, ih], pos, zoom) {
 }
 
 // photo fades in once decoded; its ambience waits so lights never float over black
+// desktop: 1440p AV1, then HEVC (Safari), then 1080p H.264. phones: 720p H.264
+const sources = (v) => innerWidth < 768 ? [[photo(v)]] : [
+  [v.replace('.mp4', '-av1.mp4'), 'video/mp4; codecs="av01.0.12M.08"'],
+  [v.replace('.mp4', '-hevc.mp4'), 'video/mp4; codecs="hvc1.1.6.L150.B0"'],
+  [v],
+]
+
 // (a biome with `video` plays it muted on loop, its photo as the poster)
 function Photo({ src, video, filter, scene, onReady }) {
   const [ready, setReady] = useState(false)
@@ -57,8 +64,10 @@ function Photo({ src, video, filter, scene, onReady }) {
   return (
     <>
       {video
-        ? <video ref={ref} src={photo(video)} poster={photo(src)} autoPlay muted loop playsInline preload="auto"
-          onLoadedData={() => setReady(true)} className={`h-full w-full object-cover transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`} />
+        ? <video ref={ref} poster={photo(src)} autoPlay muted loop playsInline preload="auto"
+          onLoadedData={() => setReady(true)} className={`h-full w-full object-cover transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`}>
+          {sources(video).map(([u, type]) => <source key={u} src={u} type={type} />)}
+        </video>
         : <img ref={ref} src={photo(src)}
           alt="" decoding="async" draggable="false" onLoad={() => setReady(true)}
           className={`h-full w-full transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`} style={{ filter }} />}
