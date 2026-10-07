@@ -72,4 +72,14 @@ Graphify: none yet.
 ## Feature 6: content + polish round (2026-10-07)
 **Plan (Opus):** Remove radial vignette; parallax only on slot 1 (Background `parallax` prop, resets transform); blocky 5x5 pixel petals w/ stepped flip (no smooth spin); HUD shows real day-of-month + local time; name → "Rohtak Harith", subtitle → "MY PORTFOLIO"; nametag "Hyper_Endgame" above player on home; Spawn → Bangalore, India + Home Base Knoxville, TN; Class → Student; VEX only in Robotics Club journey entry; contact "within 48 hours"; Sakai project (public repo); hand-drawn 10x10 head icon (auto-sampling broke right eye) + phone icon.
 **Code:** data.js, Hud.jsx (useClock), Screens.jsx, Background.jsx, App.jsx, Player.jsx (nametag), Particles.jsx (petal sprite), scripts/icons.py (head, phone), index.html title.
-**Haiku findings:** (pending)
+**Haiku findings:**
+- Background.jsx useParallax: effect deps [on], transform reset, cleanup all correct.
+- Hud.jsx useClock: interval cleanup, toLocaleTimeString usage correct.
+- Player.jsx: nametag uses me.tag (exists in data.js line 8).
+- Particles.jsx: 5x5 canvas, imageSmoothingEnabled=false, setTransform reset (line 52) correct.
+- data.js: I.phone exported (icons.js line 30), VEX only in Robotics journey (line 116), Spawn/Home Base correct.
+- No leftover "Builds" title text; component name only.
+- Build passes: 267KB JS, 26KB CSS.
+- All UTF-8 valid (em-dash in icons.js header properly encoded).
+- CRLF line endings on several src files (Windows); minor cosmetic issue, not breaking.
+- None breaking.
