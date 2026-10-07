@@ -162,3 +162,12 @@ Graphify: none yet.
 - Chip keys (hobbies/interests) and favs keys unique. Img keys unique per project.
 - `I.star` exists (already used in journey). `p.imgs` guarded by `&&`.
 - None breaking.
+
+## Kylo the dog (2026-10-07, commit a1e4400)
+**Plan (Opus):** Dog "Kylo" (`me.pet`). Sitting dog left of player on slot 3 with floating nametag. Sleeping dog under contact book on slot 8, desktop only (`SleepingDog`, rendered in App.jsx).
+**Code:** data.js `me.pet`; Player.jsx shared `Tag` nametag, slot-3 dog block, `SleepingDog` export; App.jsx `{slot === 8 && <SleepingDog />}`; public/img dog-sit/dog-sleep.png.
+**Review (Haiku):**
+- None breaking. `Tag` used with valid props. `me.pet` defined before use. `m` in scope (LazyMotion strict OK). `SleepingDog` import matches export. Both PNGs exist.
+- Minor, not fixed: slot-3 dog is positioned `right-full` of the player; on phones (player centred) it may clip past the left edge (`main` overflow-hidden, no page scroll).
+- Minor: slot-3 dog has no enter animation (Player key unchanged between slots 2-4, by design).
+- Minor: SleepingDog z-20 sits under the book panel (z-45). Intended "under Contact", but the book may hide most of it on some viewports.
