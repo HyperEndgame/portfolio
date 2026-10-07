@@ -105,7 +105,7 @@ function useProgress(slot) {
   return { toast }
 }
 
-const NEAR = new Set(['petals', 'fireflies', 'embers', 'glyphs', 'end'])
+const NEAR = new Set(['petals', 'fireflies', 'glyphs', 'end'])
 const FINE = matchMedia('(hover: hover) and (min-width: 768px)').matches // desktop: afford the extra layer
 
 const PANEL_POS = {
@@ -172,7 +172,7 @@ export default function App() {
         <Toast toast={toast} />
 
         <p className="ts-sm pointer-events-none absolute bottom-2 left-3 z-20 hidden text-[10px] text-white/45 lg:block">
-          Built by Rohtak · not affiliated with Mojang or Microsoft
+          Built with Claude · not affiliated with Mojang or Microsoft
         </p>
       </main>
     </TipProvider>

@@ -184,6 +184,17 @@ img.px, svg.px { image-rendering: pixelated; shape-rendering: crispEdges; }
 .scroll-y::-webkit-scrollbar { width: 6px; }
 .scroll-y::-webkit-scrollbar-thumb { background: #555; }
 
+/* phone particles (CSS-only, see Particles.jsx) */
+.pt { position: absolute; top: 0; will-change: transform; animation: pt-down linear infinite; }
+.pt-up { animation-name: pt-up; }
+.pt > i { display: block; image-rendering: pixelated; }
+.pt-sway { animation: pt-sway ease-in-out infinite alternate; }
+.pt-glow { box-shadow: 0 0 6px 2px currentColor; animation: pt-glow ease-in-out infinite alternate; }
+@keyframes pt-down { from { transform: translate3d(0, -30px, 0); } to { transform: translate3d(var(--dx), calc(100vh + 30px), 0); } }
+@keyframes pt-up { from { transform: translate3d(0, calc(100vh + 30px), 0); } to { transform: translate3d(var(--dx), -30px, 0); } }
+@keyframes pt-sway { from { transform: translateX(-8px); } to { transform: translateX(8px); } }
+@keyframes pt-glow { from { opacity: .3; } to { opacity: 1; } }
+
 /* phones: keep the scene alive but drop the costliest layers */
 @media (max-width: 767px) {
   .kenburns { animation: none; }
@@ -196,5 +207,6 @@ img.px, svg.px { image-rendering: pixelated; shape-rendering: crispEdges; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .pt { display: none; }
   .kenburns, .bob, .breathe, .splash, .amb-light, .amb-shaft, .amb-glint, .amb-haze { animation: none; }
 }

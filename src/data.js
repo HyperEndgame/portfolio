@@ -73,7 +73,7 @@ export const biomes = {
   1: { name: 'Cherry Valley', color: '#ff9ccf', src: img('cherry-river.webp'), fx: 'petals' },
   2: { name: 'Cherry Grove', color: '#ff9ccf', src: img('cherry-grove.webp'), fx: 'petals' },
   3: { name: 'Enchanted Grove', color: '#c79bff', src: img('cherry-grove.webp'), pos: '30% 35%', zoom: 1.45, filter: 'hue-rotate(-28deg) saturate(1.15) brightness(.62)', fx: 'glyphs' },
-  4: { name: 'Dripstone Caves', color: '#ffb35c', src: img('lush-caves.webp'), pos: '12% 55%', zoom: 1.35, filter: 'sepia(.35) saturate(1.2) brightness(.72)', fx: 'embers' },
+  4: { name: 'Lush Caves', color: '#7dffb0', src: img('lush-caves.webp'), pos: '12% 55%', zoom: 1.35, fx: 'fireflies' },
   5: { name: 'Windswept Peaks', color: '#9fd6ff', src: img('village.webp'), pos: '50% 20%', zoom: 1.18, fx: 'motes' },
   6: { name: 'Twilight River', color: '#7fd8ff', src: img('cherry-river.webp'), pos: '85% 75%', zoom: 1.4, filter: 'brightness(.55) saturate(.85) hue-rotate(-12deg)', fx: 'fireflies' },
   7: { name: 'Village', color: '#7dff7d', src: img('village.webp'), pos: '40% 70%', fx: 'motes' },

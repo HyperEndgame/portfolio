@@ -1,10 +1,9 @@
-// Canvas particles per biome: petals, fireflies, embers, motes, enchant glyphs, end sparks.
-import { useEffect, useRef } from 'react'
+// Canvas particles per biome: petals, fireflies, motes, enchant glyphs, end sparks.
+import { useEffect, useMemo, useRef } from 'react'
 
 const FX = {
   petals: { n: 42, c: ['#ffb7d2', '#ff9ec4', '#ffd0e2', '#f6a8c8'], vx: [.4, 1.2], vy: [.5, 1.1], s: [12, 20], kind: 'petal' },
   fireflies: { n: 38, c: ['#ffe27a', '#fff2b0', '#ffd04a'], vx: [-.25, .25], vy: [-.3, .1], s: [2, 3], kind: 'glow' },
-  embers: { n: 30, c: ['#ffb35c', '#ffd28a', '#ff8a3a'], vx: [-.2, .2], vy: [-.5, -.15], s: [2, 3], kind: 'glow' },
   motes: { n: 40, c: ['#ffffff', '#fff6d8'], vx: [-.15, .25], vy: [-.12, .12], s: [2, 3], kind: 'glow' },
   glyphs: { n: 26, c: ['#d7a8ff', '#b07cff', '#f0d4ff'], vx: [-.2, .2], vy: [-.55, -.2], s: [10, 14], kind: 'glyph' },
   end: { n: 70, c: ['#e3a6ff', '#b46cff', '#ffffff'], vx: [-.15, .15], vy: [-.6, -.15], s: [2, 4], kind: 'glow' },
@@ -27,6 +26,14 @@ function petal(color) {
     if (pal[ch]) { x.fillStyle = pal[ch]; x.fillRect(i, y, 1, 1) }
   }))
   return (sprites[color] = c)
+}
+
+// rune as a 3x5 sprite (rows 0, 2, 4) for the CSS version
+function rune(bits, color) {
+  const c = document.createElement('canvas'), x = c.getContext('2d')
+  c.width = 3; c.height = 5; x.fillStyle = color
+  for (let i = 0; i < 9; i++) if (bits[i] === '1') x.fillRect(i % 3, (i / 3 | 0) * 2, 1, 1)
+  return c
 }
 
 function spawn(cfg, w, h, fresh) {
@@ -65,7 +72,7 @@ function draw(cx, cfg, p, t) {
   cx.fillRect(p.x, p.y, p.s, p.s)
 }
 
-export default function Particles({ fx, near = false }) {
+function CanvasParticles({ fx, near }) {
   const ref = useRef()
   useEffect(() => {
     if (matchMedia('(prefers-reduced-motion: reduce)').matches) return
@@ -81,12 +88,9 @@ export default function Particles({ fx, near = false }) {
     }
     size()
     addEventListener('resize', size)
-    const small = w < 768
-    const ps = Array.from({ length: small ? Math.ceil(cfg.n / 3) : cfg.n }, () => spawn(cfg, w, h, true))
-    const gap = small ? 1000 / 30 - 2 : 0 // phones: cap at ~30fps
+    const ps = Array.from({ length: cfg.n }, () => spawn(cfg, w, h, true))
     const tick = (now) => {
       raf = requestAnimationFrame(tick)
-      if (now - last < gap) return
       // time-based step: same speed at any frame rate, clamped after tab switches
       const k = last ? Math.min((now - last) / (1000 / 60), 4) : 1
       last = now
@@ -104,4 +108,40 @@ export default function Particles({ fx, near = false }) {
     return () => { cancelAnimationFrame(raf); removeEventListener('resize', size) }
   }, [fx, near])
   return <canvas ref={ref} style={{ imageRendering: 'pixelated' }} className={`pointer-events-none absolute left-0 top-0 ${near ? 'z-[46] opacity-60' : 'z-10'}`} aria-hidden="true" />
+}
+
+// phones: a handful of tiny sprites on CSS keyframes. The compositor moves them,
+// so there is no per-frame JS and no full-screen canvas to repaint and upload.
+function CssParticles({ fx }) {
+  const items = useMemo(() => {
+    const cfg = FX[fx], h = innerHeight + 60
+    return Array.from({ length: Math.ceil(cfg.n / 3) }, (_, i) => {
+      const p = spawn(cfg, innerWidth, h, true)
+      const vy = (cfg.vy[0] + cfg.vy[1]) / 2
+      const dur = h / (Math.max(Math.abs(p.vy), .15) * 60)
+      const dx = Math.max(-.6, Math.min(.6, p.vx * 60 * dur / innerWidth)) * innerWidth // keep drift on screen
+      const img = cfg.kind === 'petal' ? petal(p.c) : cfg.kind === 'glyph' ? rune(p.r, p.c) : null
+      return {
+        key: i, cls: `pt ${vy < 0 ? 'pt-up' : ''}`,
+        style: { left: p.x - dx / 2, '--dx': `${dx}px`, animationDuration: `${dur}s`, animationDelay: `${-Math.random() * dur}s` },
+        inner: {
+          width: p.s, height: img ? p.s * img.height / img.width : p.s,
+          background: img ? `url(${img.toDataURL()}) 0 0 / 100% 100%` : p.c, color: p.c,
+          animationDuration: `${2 + Math.random() * 2}s`, animationDelay: `${-Math.random() * 4}s`,
+        },
+        glow: !img,
+      }
+    })
+  }, [fx])
+  return (
+    <div className="pointer-events-none absolute inset-0 z-10 overflow-hidden" aria-hidden="true">
+      {items.map(p => <div key={p.key} className={p.cls} style={p.style}><i className={p.glow ? 'pt-glow' : 'pt-sway'} style={p.inner} /></div>)}
+    </div>
+  )
+}
+
+const PHONE = matchMedia('(max-width: 767px)').matches
+
+export default function Particles({ fx, near = false }) {
+  return PHONE ? <CssParticles fx={fx} /> : <CanvasParticles fx={fx} near={near} />
 }
