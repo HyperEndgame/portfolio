@@ -43,6 +43,21 @@ function cover({ w, h }, [iw, ih], pos, zoom) {
   return { width: dw, height: dh, left: (W - dw) * px, top: (H - dh) * py }
 }
 
+// photo fades in once decoded; its ambience waits so lights never float over black
+function Photo({ src, width, filter, scene }) {
+  const [ready, setReady] = useState(false)
+  const ref = useRef()
+  useEffect(() => { if (ref.current?.complete) setReady(true) }, [])
+  return (
+    <>
+      <img ref={ref} src={src} srcSet={`${src.replace('.webp', '-1280.webp')} 1280w, ${src} 1920w`} sizes={`${Math.round(width)}px`}
+        alt="" decoding="async" draggable="false" onLoad={() => setReady(true)}
+        className={`h-full w-full transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`} style={{ filter }} />
+      {ready && <Ambience scene={scene} />}
+    </>
+  )
+}
+
 export default function Background({ biome, side }) {
   const par = useParallax()
   const size = useSize()
@@ -63,9 +78,7 @@ export default function Background({ biome, side }) {
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}>
             <div className="kenburns absolute inset-0" style={{ transformOrigin: pos }}>
               <div className="absolute" style={box}>
-                <img src={src} srcSet={`${src.replace('.webp', '-1280.webp')} 1280w, ${src} 1920w`} sizes={`${Math.round(box.width)}px`}
-                  alt="" decoding="async" draggable="false" className="h-full w-full" style={{ filter }} />
-                <Ambience scene={scene} />
+                <Photo src={src} width={box.width} filter={filter} scene={scene} />
               </div>
             </div>
           </m.div>

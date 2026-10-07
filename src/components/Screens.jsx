@@ -83,7 +83,7 @@ export function Skills() {
       <Stagger className="flex flex-col gap-1.5">
         {skills.map(s => (
           <Item key={s.name} tabIndex={0} {...tip({ title: `${s.name} ${s.lvl}`, lore: s.lore, color: '#55ffff' })}
-            className="row grid grid-cols-[34px_1fr_1.1fr_34px] items-center gap-3 px-3 py-2 text-[13px]">
+            className="row grid grid-cols-[22px_1fr_56px_26px] items-center gap-2 px-2.5 py-2 text-[12px] sm:grid-cols-[34px_1fr_1.1fr_34px] sm:gap-3 sm:px-3 sm:text-[13px]">
             <span className="font-bold text-[#ffcf4a]">{s.lvl}</span>
             <span className="truncate">{s.name}</span>
             <span className="h-[7px] bg-black/60">

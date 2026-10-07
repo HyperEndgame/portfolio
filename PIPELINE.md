@@ -57,3 +57,4 @@ Graphify: none yet.
 - `npm run build` passes: 265 KB JS, 25 KB CSS.
 - All src files valid UTF-8 (US-ASCII subset, Rails-safe).
 - None breaking.
+- Follow-up: photo fades in on load and Ambience waits for it (no lights over black on cold load); skill rows reflow on mobile (names no longer truncated).
