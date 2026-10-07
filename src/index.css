@@ -189,6 +189,10 @@ img.px, svg.px { image-rendering: pixelated; shape-rendering: crispEdges; }
   .kenburns { animation: none; }
   .amb-glint, .amb-haze { display: none; }
   .amb-light:nth-of-type(2n) { display: none; }
+  /* static lights/shafts: no per-frame compositing of big gradient layers */
+  .amb-light, .amb-shaft, .breathe { animation: none; will-change: auto; }
+  .amb-light { transform: translate(-50%, -50%); opacity: .7; }
+  .amb-shaft { opacity: .65; }
 }
 
 @media (prefers-reduced-motion: reduce) {

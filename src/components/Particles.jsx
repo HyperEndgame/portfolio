@@ -72,23 +72,24 @@ export default function Particles({ fx, near = false }) {
     const base = FX[fx], cv = ref.current, cx = cv.getContext('2d')
     // near layer: a few big, fast, out-of-focus particles for depth
     const cfg = near ? { ...base, n: base.n / 4 | 0, s: base.s.map(v => v * 2.6), vx: base.vx.map(v => v * 1.8), vy: base.vy.map(v => v * 1.8) } : base
-    let w, h, raf, t = 0
+    let w = 0, h, raf, t = 0, last = 0
     const size = () => {
-      const d = 1 // pixel art: 1x canvas is plenty and 4x cheaper on retina
-      w = innerWidth; h = innerHeight
-      cv.width = w * d; cv.height = h * d
-      cx.setTransform(d, 0, 0, d, 0, 0)
+      // phones fire resize when the address bar slides: only rebuild on width change
+      if (innerWidth === w && innerHeight <= h) return
+      w = innerWidth; h = Math.max(innerHeight, h || 0)
+      cv.width = w; cv.height = h // pixel art: 1x canvas, upscaled with image-rendering: pixelated
     }
     size()
     addEventListener('resize', size)
     const small = w < 768
     const ps = Array.from({ length: small ? Math.ceil(cfg.n / 3) : cfg.n }, () => spawn(cfg, w, h, true))
-    // phones: draw at 30fps, move twice as far per frame
-    const k = small ? 2 : 1
-    let frame = 0
-    const tick = () => {
+    const gap = small ? 1000 / 30 - 2 : 0 // phones: cap at ~30fps
+    const tick = (now) => {
       raf = requestAnimationFrame(tick)
-      if (small && frame++ % 2) return
+      if (now - last < gap) return
+      // time-based step: same speed at any frame rate, clamped after tab switches
+      const k = last ? Math.min((now - last) / (1000 / 60), 4) : 1
+      last = now
       t += k / 60
       cx.clearRect(0, 0, w, h)
       for (const p of ps) {
@@ -99,8 +100,8 @@ export default function Particles({ fx, near = false }) {
       }
       cx.globalAlpha = 1
     }
-    tick()
+    raf = requestAnimationFrame(tick)
     return () => { cancelAnimationFrame(raf); removeEventListener('resize', size) }
   }, [fx, near])
-  return <canvas ref={ref} className={`pointer-events-none absolute inset-0 h-full w-full ${near ? 'z-[46] opacity-60' : 'z-10'}`} aria-hidden="true" />
+  return <canvas ref={ref} style={{ imageRendering: 'pixelated' }} className={`pointer-events-none absolute left-0 top-0 ${near ? 'z-[46] opacity-60' : 'z-10'}`} aria-hidden="true" />
 }
