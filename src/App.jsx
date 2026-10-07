@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
+import { LazyMotion, domAnimation, m } from 'framer-motion'
 import Background from './components/Background'
 import Particles from './components/Particles'
 import Player from './components/Player'
@@ -148,24 +148,22 @@ export default function App() {
         {debug && <Debug biome={b} slot={slot} />}
         <SoundToggle on={sound} toggle={toggleSound} />
 
-        <AnimatePresence mode="wait" initial={false}>
+        {/* no AnimatePresence mode="wait": fast switches left it stuck on a stale or invisible panel */}
           {boxed ? (
             <m.section key={slot} data-scroll aria-label={b.name}
               className={`${slot === 8 ? 'book' : 'panel'} scroll-y fixed inset-x-3 bottom-[150px] ${L.view ? 'top-[38vh]' : 'top-[84px]'} z-[45] p-5 md:absolute md:inset-x-auto md:bottom-auto md:top-[15vh] md:max-h-[calc(85vh-190px)] md:p-6 ${PANEL_POS[L.panel]}`}
               initial={{ opacity: 0, x: enter }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: enter / 2 }}
               transition={{ duration: .28, ease: [0.22, 1, 0.36, 1] }}>
               {screens[slot]}
             </m.section>
           ) : (
             <m.section key={slot} aria-label={b.name}
-              className={`absolute inset-x-0 top-0 bottom-[150px] z-30 flex items-center justify-center px-4 pt-[26vh] md:pt-0 ${slot === 1 ? 'md:pr-[22vw]' : 'md:pr-[18vw]'}`}
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .3 }}>
+              className={`absolute inset-x-0 top-0 bottom-[150px] z-30 flex items-center justify-center px-4 pt-[26vh] md:pt-0`}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: .3 }}>
               {screens[slot]}
             </m.section>
           )}
-        </AnimatePresence>
 
         {FINE && NEAR.has(b.fx) && <Particles fx={b.fx} near />}
         <Hotbar slot={slot} go={go} level={15} xp={10 / 12} />
