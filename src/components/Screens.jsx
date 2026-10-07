@@ -1,7 +1,7 @@
 // Content for each hotbar slot.
 import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { ArrowRight, Check, Copy, ExternalLink } from 'lucide-react'
+import { m } from 'framer-motion'
+import Ico from './Ico'
 import Pixel from './Pixel'
 import { useTip } from './Tooltip'
 import { play } from '../sound'
@@ -11,8 +11,8 @@ import * as I from '../icons'
 // stagger children on mount
 const list = { hidden: {}, show: { transition: { staggerChildren: .05, delayChildren: .08 } } }
 const item = { hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0, transition: { duration: .3, ease: [0.22, 1, 0.36, 1] } } }
-const Stagger = ({ className, children }) => <motion.div variants={list} initial="hidden" animate="show" className={className}>{children}</motion.div>
-const Item = ({ className, children, ...p }) => <motion.div variants={item} className={className} {...p}>{children}</motion.div>
+const Stagger = ({ className, children }) => <m.div variants={list} initial="hidden" animate="show" className={className}>{children}</m.div>
+const Item = ({ className, children, ...p }) => <m.div variants={item} className={className} {...p}>{children}</m.div>
 
 const Title = ({ children, right }) => (
   <div className="mb-4 flex items-baseline justify-between gap-3">
@@ -28,12 +28,12 @@ export const Btn = ({ children, onClick, className = '' }) => (
 export function Menu({ go }) {
   return (
     <div className="flex w-full max-w-[640px] flex-col items-center text-center">
-      <motion.div className="relative mb-2" initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, ease: [0.22, 1, 0.36, 1] }}>
+      <m.div className="relative mb-2" initial={{ opacity: 0, y: -16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .7, ease: [0.22, 1, 0.36, 1] }}>
         <h1 className="logo whitespace-nowrap text-[clamp(34px,6vw,76px)] leading-none">{me.name} Builds</h1>
-        <span className="splash ts absolute -right-2 -bottom-4 whitespace-nowrap text-[11px] sm:-right-14 sm:bottom-1 sm:text-[15px]">
+        <span className="splash ts absolute -top-6 right-0 whitespace-nowrap text-[11px] sm:top-auto sm:-right-14 sm:bottom-1 sm:text-[15px]">
           Now with 100% more blocks!
         </span>
-      </motion.div>
+      </m.div>
       <p className="ts mb-9 mt-4 text-[12px] tracking-[.35em] text-[#bdbdbd]">SURVIVAL · HARD MODE</p>
       <Stagger className="flex w-full max-w-[440px] flex-col gap-2.5">
         <Item><Btn className="w-full" onClick={() => go(2)}>Enter World</Btn></Item>
@@ -56,7 +56,7 @@ export function Profile({ go }) {
       <Title>Player Profile</Title>
       <div className="flex flex-col gap-5 sm:flex-row">
         <div className="slot-dark grid h-[132px] w-[132px] shrink-0 place-items-center self-center overflow-hidden sm:self-start">
-          <img src={me.avatar} alt={`${me.full}'s character`} className="px h-[150%] w-auto max-w-none translate-y-[24%] object-cover object-top" />
+          <img src={me.head} alt={`${me.full}'s character`} className="px w-[86%]" />
         </div>
         <div className="flex-1">
           <p className="mb-4 text-[13px] leading-relaxed text-[#dcdcdc]">{me.bio}</p>
@@ -87,7 +87,7 @@ export function Skills() {
             <span className="font-bold text-[#ffcf4a]">{s.lvl}</span>
             <span className="truncate">{s.name}</span>
             <span className="h-[7px] bg-black/60">
-              <motion.span className="block h-full bg-gradient-to-r from-[#3fd0d0] to-[#a0f0ff] shadow-[0_0_10px_rgba(80,230,255,.45)]"
+              <m.span className="block h-full bg-gradient-to-r from-[#3fd0d0] to-[#a0f0ff] shadow-[0_0_10px_rgba(80,230,255,.45)]"
                 initial={{ width: 0 }} animate={{ width: `${s.pct}%` }} transition={{ duration: .9, delay: .2, ease: [0.22, 1, 0.36, 1] }} />
             </span>
             <span className="text-right text-[#55ff55]">{s.pct}</span>
@@ -120,7 +120,7 @@ export function Builds({ go }) {
         ) : <Item key={i} className="slot-dark aspect-square" />)}
       </Stagger>
       {p ? (
-        <motion.div key={sel} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="row mt-3 p-3">
+        <m.div key={sel} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="row mt-3 p-3">
           <div className="ts text-[15px]" style={{ color: p.rarity }}>{p.title}</div>
           <p className="mt-1 text-[12px] leading-relaxed text-[#d4d4d4]">{p.desc}</p>
           <div className="mt-2 flex flex-wrap gap-1.5">
@@ -128,9 +128,9 @@ export function Builds({ go }) {
           </div>
           {p.link && (
             <a href={p.link} target="_blank" rel="noreferrer" onClick={() => play('click')}
-              className="mc-btn mt-3 inline-flex h-9 items-center gap-2 px-4 text-[13px]">Open <ExternalLink size={13} /></a>
+              className="mc-btn mt-3 inline-flex h-9 items-center gap-2 px-4 text-[13px]">Open <Ico name="external" size={13} /></a>
           )}
-        </motion.div>
+        </m.div>
       ) : <Hint>Hover an item for details</Hint>}
       <Btn className="mt-4" onClick={() => go(7)}>See Trades</Btn>
     </>
@@ -150,7 +150,7 @@ export function Journey() {
                 <div key={k} className="slot-dark grid h-9 w-9 place-items-center"><Pixel icon={it} size={22} /></div>
               ))}
             </div>
-            <ArrowRight className="shrink-0 text-[#8a8a8a]" size={16} />
+            <Ico name="arrow" className="shrink-0 text-[#8a8a8a]" size={16} />
             <div className="min-w-0" tabIndex={0} {...tip({ title: j.title, lore: j.desc, color: '#ffff55' })}>
               <div className="text-[11px] text-[var(--dim)]">{j.when}</div>
               <div className="ts text-[14px] font-bold text-white">{j.title}</div>
@@ -177,7 +177,7 @@ export function Advancements({ go }) {
               <div className="text-[13px] text-white">{a.title}</div>
               <div className="truncate text-[11px] italic text-[var(--gray)]">{a.desc}</div>
             </div>
-            {!a.locked && <Check size={16} className="shrink-0 text-[#55ff55]" />}
+            {!a.locked && <Ico name="check" size={16} className="shrink-0 text-[#55ff55]" />}
           </Item>
         ))}
       </Stagger>
@@ -198,7 +198,7 @@ export function Trades({ go }) {
               className="row flex w-full items-center gap-3 px-3 py-2 text-left">
               <Pixel icon={I.emerald} size={20} />
               <span className="w-6 text-[13px]">{t.cost}</span>
-              <ArrowRight size={14} className="text-[#777]" />
+              <Ico name="arrow" size={14} className="text-[#777]" />
               <Pixel icon={t.icon} size={20} />
               <span className="min-w-0 flex-1">
                 <span className="block text-[13px] text-white">{t.title}</span>
@@ -238,8 +238,8 @@ function LinkRow({ l }) {
         <span className="block text-[10px] tracking-[.2em] opacity-60">{l.label.toUpperCase()}</span>
         <span className="block truncate text-[14px]">{l.value}</span>
       </span>
-      {l.copy && (copied ? <Check size={15} className="text-[#2a7a2a]" /> : <Copy size={15} className="opacity-50" />)}
-      {l.href && <ExternalLink size={15} className="opacity-50" />}
+      {l.copy && (copied ? <Ico name="check" size={15} className="text-[#2a7a2a]" /> : <Ico name="copy" size={15} className="opacity-50" />)}
+      {l.href && <Ico name="external" size={15} className="opacity-50" />}
     </>
   )
   const cls = 'row flex w-full items-center gap-3 px-1 py-2.5 text-left'
@@ -265,16 +265,16 @@ export function Contact({ go }) {
 export function End({ go }) {
   return (
     <div className="flex flex-col items-center bg-[radial-gradient(ellipse_at_center,rgba(12,0,24,.72)_0%,rgba(12,0,24,.45)_45%,transparent_72%)] px-10 py-12 text-center sm:px-24">
-      <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .2 }}
-        className="ts text-[11px] tracking-[.4em] text-[#c79bff]">THANKS FOR PLAYING</motion.p>
-      <motion.h2 initial={{ opacity: 0, scale: .92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: .9, ease: [0.22, 1, 0.36, 1] }}
-        className="logo mt-2 text-[52px] leading-none sm:text-[76px]">The End</motion.h2>
-      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .5 }}
+      <m.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .2 }}
+        className="ts text-[11px] tracking-[.4em] text-[#c79bff]">THANKS FOR PLAYING</m.p>
+      <m.h2 initial={{ opacity: 0, scale: .92 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: .9, ease: [0.22, 1, 0.36, 1] }}
+        className="logo mt-2 text-[52px] leading-none sm:text-[76px]">The End</m.h2>
+      <m.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .5 }}
         className="ts mt-5 space-y-1 text-[13px] text-[#e0d4ff]">
         <p>You made it to the edge of the world.</p>
         <p className="text-[#b9a6e0]">Every world starts with a seed —</p>
         <p className="text-[#b9a6e0]">let's plant the next one together.</p>
-      </motion.div>
+      </m.div>
       <div className="mt-6 flex gap-2.5">
         <Btn onClick={() => go(1)}>Respawn</Btn>
         <Btn onClick={() => go(8)}>Contact</Btn>

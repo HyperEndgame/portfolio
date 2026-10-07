@@ -58,7 +58,7 @@ export default function Particles({ fx, near = false }) {
     const cfg = near ? { ...base, n: base.n / 4 | 0, s: base.s.map(v => v * 2.6), vx: base.vx.map(v => v * 1.8), vy: base.vy.map(v => v * 1.8) } : base
     let w, h, raf, t = 0
     const size = () => {
-      const d = Math.min(devicePixelRatio || 1, 2)
+      const d = 1 // pixel art: 1x canvas is plenty and 4x cheaper on retina
       w = innerWidth; h = innerHeight
       cv.width = w * d; cv.height = h * d
       cx.setTransform(d, 0, 0, d, 0, 0)
@@ -81,5 +81,5 @@ export default function Particles({ fx, near = false }) {
     tick()
     return () => { cancelAnimationFrame(raf); removeEventListener('resize', size) }
   }, [fx, near])
-  return <canvas ref={ref} className={`pointer-events-none absolute inset-0 h-full w-full ${near ? 'z-[46] opacity-70 blur-[3px]' : 'z-10'}`} aria-hidden="true" />
+  return <canvas ref={ref} className={`pointer-events-none absolute inset-0 h-full w-full ${near ? 'z-[46] opacity-60' : 'z-10'}`} aria-hidden="true" />
 }

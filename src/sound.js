@@ -41,8 +41,6 @@ function noise(c, t, d, v, hz) {
 const SOUNDS = {
   click: (c, t) => { noise(c, t, 0.05, 0.3, 2200); tone(c, t, { f: 600, to: 300, d: 0.06, v: 0.06 }) },
   hover: (c, t) => tone(c, t, { f: 1400, to: 1000, d: 0.025, v: 0.025 }),
-  hit: (c, t) => noise(c, t, 0.09, 0.4, 700),
-  break: (c, t) => { noise(c, t, 0.25, 0.5, 900); tone(c, t, { f: 180, to: 60, d: 0.2, type: 'triangle', v: 0.15 }) },
   pop: (c, t) => tone(c, t, { f: 300, to: 900, d: 0.09, type: 'sine', v: 0.15 }),
   levelup: (c, t) => [523, 659, 784, 1047].forEach((f, i) =>
     tone(c, t + i * 0.09, { f, d: 0.18, type: 'triangle', v: 0.12 })),

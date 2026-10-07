@@ -433,15 +433,6 @@ c.rows(1, 3, [
 c.outline('#121214')
 icons['camera'] = c
 
-c = C()
-c.disc(8, 8.5, 6.2, '#c8955a')
-c.disc(10.5, 11, 1.6, (0, 0, 0, 0))
-c.disc(5, 6, 1.2, '#e83a3a')
-c.disc(8, 4.8, 1.2, '#3a8ae8')
-c.disc(11.2, 6.2, 1.2, '#3ac85a')
-c.disc(4.8, 9.8, 1.2, '#f0d040')
-c.outline('#3a2410')
-icons['palette'] = c
 
 c = C()
 c.rows(1, 2, [

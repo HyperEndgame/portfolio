@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import Background from './components/Background'
 import Particles from './components/Particles'
 import Player from './components/Player'
@@ -61,6 +61,31 @@ function useWheel(cycle) {
   }, [cycle])
 }
 
+// horizontal swipe cycles slots on touch screens
+function useSwipe(cycle) {
+  useEffect(() => {
+    let x0 = 0, y0 = 0
+    const start = (e) => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY }
+    const end = (e) => {
+      const dx = e.changedTouches[0].clientX - x0, dy = e.changedTouches[0].clientY - y0
+      if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) cycle(dx < 0 ? 1 : -1)
+    }
+    addEventListener('touchstart', start, { passive: true })
+    addEventListener('touchend', end, { passive: true })
+    return () => { removeEventListener('touchstart', start); removeEventListener('touchend', end) }
+  }, [cycle])
+}
+
+// warm the cache so the first visit to each biome doesn't flash black
+function usePreload() {
+  useEffect(() => {
+    const small = innerWidth < 1100
+    const srcs = [...new Set(Object.values(biomes).map(b => small ? b.src.replace('.webp', '-1280.webp') : b.src))]
+    const id = setTimeout(() => srcs.forEach(s => { new Image().src = s }), 600)
+    return () => clearTimeout(id)
+  }, [])
+}
+
 // XP + advancement toasts for exploring new screens
 function useProgress(slot) {
   const [seen, setSeen] = useState(() => new Set([1]))
@@ -82,6 +107,7 @@ function useProgress(slot) {
 }
 
 const NEAR = new Set(['petals', 'fireflies', 'embers', 'glyphs', 'end'])
+const FINE = matchMedia('(hover: hover) and (min-width: 768px)').matches // desktop: afford the extra layer
 
 const PANEL_POS = {
   left: 'md:left-[5vw] md:w-[min(540px,46vw)]',
@@ -99,6 +125,8 @@ export default function App() {
   const toggleDebug = useCallback(() => setDebug(v => !v), [])
   useKeys(go, cycle, toggleSound, toggleDebug)
   useWheel(cycle)
+  useSwipe(cycle)
+  usePreload()
   const { level, xp, toast } = useProgress(slot)
 
   const b = biomes[slot], L = LAYOUT[slot]
@@ -110,6 +138,7 @@ export default function App() {
   const enter = L.panel === 'right' ? 24 : -24
 
   return (
+    <LazyMotion features={domAnimation} strict>
     <TipProvider>
       <main className="relative h-full w-full select-none overflow-hidden">
         <Background biome={b} side={L.panel} />
@@ -122,24 +151,24 @@ export default function App() {
 
         <AnimatePresence mode="wait">
           {boxed ? (
-            <motion.section key={slot} data-scroll aria-label={b.name}
+            <m.section key={slot} data-scroll aria-label={b.name}
               className={`${slot === 8 ? 'book' : 'panel'} scroll-y fixed inset-x-3 bottom-[150px] top-[84px] z-[45] p-5 md:absolute md:inset-x-auto md:bottom-auto md:top-[15vh] md:max-h-[calc(85vh-190px)] md:p-6 ${PANEL_POS[L.panel]}`}
-              initial={{ opacity: 0, x: enter, filter: 'blur(4px)' }}
-              animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, x: enter / 2, filter: 'blur(4px)' }}
-              transition={{ duration: .32, ease: [0.22, 1, 0.36, 1] }}>
+              initial={{ opacity: 0, x: enter }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: enter / 2 }}
+              transition={{ duration: .28, ease: [0.22, 1, 0.36, 1] }}>
               {screens[slot]}
-            </motion.section>
+            </m.section>
           ) : (
-            <motion.section key={slot} aria-label={b.name}
+            <m.section key={slot} aria-label={b.name}
               className={`absolute inset-x-0 top-0 bottom-[150px] z-30 flex items-center justify-center px-4 ${slot === 1 ? 'md:pr-[22vw]' : 'md:pr-[18vw]'}`}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .3 }}>
               {screens[slot]}
-            </motion.section>
+            </m.section>
           )}
         </AnimatePresence>
 
-        {NEAR.has(b.fx) && <Particles fx={b.fx} near />}
+        {FINE && NEAR.has(b.fx) && <Particles fx={b.fx} near />}
         <Hotbar slot={slot} go={go} level={level} xp={xp} />
         <Toast toast={toast} />
 
@@ -148,5 +177,6 @@ export default function App() {
         </p>
       </main>
     </TipProvider>
+    </LazyMotion>
   )
 }

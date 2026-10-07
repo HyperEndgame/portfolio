@@ -20,6 +20,7 @@ export const me = {
     ['Status', 'Online · accepting quests'],
   ],
   avatar: img('player-front.png'),
+  head: img('player-head.png'),
   avatarBack: img('player-back.png'),
 }
 
@@ -34,13 +35,13 @@ export const scenes = {
       [33, 16, 6, BERRY], [36, 12, 6, BERRY], [24, 33, 6, BERRY], [26, 41, 6, BERRY], [33, 40, 5, BERRY], [65, 18, 6, BERRY],
       [64, 24, 5, BERRY], [69, 40, 6, BERRY], [86, 28, 7, BERRY], [91, 24, 7, BERRY], [92, 33, 6, BERRY], [60, 42, 5, BERRY],
       [44, 58, 12, 'rgba(200,255,150,.45)']],
-    glints: [{ x: 38, y: 64, w: 26, h: 26, n: 22, color: '#dff6ff' }],
+    glints: [{ x: 38, y: 64, w: 26, h: 26, n: 16, color: '#dff6ff' }],
   },
   'cherry-river.webp': {
     size: [1920, 1027],
     shafts: [{ x: 50, y: 38, from: -70, to: 70, n: 9, len: 70, w: 4, color: 'rgba(255,225,180,.22)' }],
     lights: [[50, 38, 40, 'rgba(255,220,170,.55)']],
-    glints: [{ x: 6, y: 62, w: 38, h: 32, n: 28, color: '#fff3e0' }],
+    glints: [{ x: 6, y: 62, w: 38, h: 32, n: 18, color: '#fff3e0' }],
   },
   'cherry-grove.webp': {
     size: [1920, 1080],
@@ -55,10 +56,10 @@ export const scenes = {
   },
   'end.webp': {
     size: [1920, 1080],
-    haze: 'linear-gradient(90deg, transparent, rgba(190,110,255,.18), transparent)',
+    haze: 'radial-gradient(ellipse 40% 50% at 50% 50%, rgba(190,110,255,.22), transparent 70%)',
     lights: [[60, 38, 55, 'rgba(170,90,255,.35)'], [16, 50, 8, 'rgba(255,240,255,.7)'], [21, 44, 8, 'rgba(255,240,255,.6)'],
       [26, 52, 7, 'rgba(255,240,255,.6)'], [37, 66, 9, 'rgba(210,90,255,.7)'], [70, 68, 9, 'rgba(210,90,255,.7)'], [80, 72, 9, 'rgba(210,90,255,.7)']],
-    glints: [{ x: 0, y: 0, w: 100, h: 30, n: 30, color: '#e8d0ff' }, { x: 13, y: 32, w: 16, h: 36, n: 18, color: '#fff' }],
+    glints: [{ x: 0, y: 0, w: 100, h: 30, n: 18, color: '#e8d0ff' }, { x: 13, y: 32, w: 16, h: 36, n: 18, color: '#fff' }],
   },
 }
 

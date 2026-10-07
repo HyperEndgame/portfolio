@@ -1,6 +1,6 @@
 // Full-bleed biome photo: crossfade + Ken Burns + mouse parallax + anchored ambience.
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, m } from 'framer-motion'
 import Ambience from './Ambience'
 import { scenes } from '../data'
 
@@ -47,7 +47,7 @@ export default function Background({ biome, side }) {
   const par = useParallax()
   const size = useSize()
   const { src, pos = '50% 50%', zoom = 1, filter = 'none' } = biome
-  const scene = scenes[src.split('/').pop()]
+  const scene = scenes[src.split('/').pop()] || { size: [1920, 1080] }
   const box = cover({ w: size.w, h: size.h }, scene.size, pos, zoom)
   const shade = side === 'right'
     ? 'linear-gradient(270deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.15) 45%, transparent 70%)'
@@ -56,18 +56,19 @@ export default function Background({ biome, side }) {
     <div className="absolute inset-0 overflow-hidden bg-black" aria-hidden="true">
       <div ref={par} className="absolute -inset-6 transition-transform duration-300 ease-out">
         <AnimatePresence initial={false}>
-          <motion.div key={src + pos} className="absolute inset-0"
+          <m.div key={src + pos} className="absolute inset-0"
             initial={{ opacity: 0, scale: 1.04 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}>
             <div className="kenburns absolute inset-0" style={{ transformOrigin: pos }}>
               <div className="absolute" style={box}>
-                <img src={src} alt="" decoding="async" draggable="false" className="h-full w-full" style={{ filter }} />
+                <img src={src} srcSet={`${src.replace('.webp', '-1280.webp')} 1280w, ${src} 1920w`} sizes={`${Math.round(box.width)}px`}
+                  alt="" decoding="async" draggable="false" className="h-full w-full" style={{ filter }} />
                 <Ambience scene={scene} />
               </div>
             </div>
-          </motion.div>
+          </m.div>
         </AnimatePresence>
       </div>
       <div className="pointer-events-none absolute inset-0 transition-[background] duration-700" style={{ background: shade }} />

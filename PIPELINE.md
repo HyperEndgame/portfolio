@@ -41,3 +41,8 @@ Graphify: none yet.
 - Build passes: 310KB JS, 25KB CSS; all chunks transformed.
 - UTF-8: all 15 files valid.
 - None breaking.
+
+## Feature 4: audit + perf + mobile (2026-10-07)
+**Plan (Opus):** Apply ponytail audit (dead Google Fonts, dead tailwind extends, unused palette icon + hit/break sounds, Pixel string branch, lucide → 6 inline SVGs). Perf: drop backdrop-filter, blur filters, mix-blend; shafts → soft radial gradients; near particle layer desktop-only w/o CSS blur; 1x canvas; LazyMotion+domAnimation (layoutId selector → CSS left transition); 1280w srcset + preload. Mobile: tooltips off on touch (stuck after tap), dedicated head crop for Profile, swipe to change slot, touch-action/overscroll, splash moved off subtitle.
+**Code:** Ico.jsx (new), Pixel, Hud, Screens, App (useSwipe, usePreload, LazyMotion), Background (srcset, scene guard), Particles, Tooltip, Ambience, index.css, data.js, icons.py, public/img (*-1280.webp, player-head.png). JS 310→265 KB. Lush Caves 91 fps (refresh-capped).
+**Haiku findings:** (pending)

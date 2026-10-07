@@ -26,9 +26,9 @@ function Shafts({ shafts }) {
     const ang = s.from + (s.to - s.from) * (i / Math.max(1, s.n - 1))
     return (
       <span key={`${k}-${i}`} className="amb-shaft" style={{
-        ...at(s.x, s.y), height: `${s.len}%`, width: `${s.w + (i % 3) * s.w * .6}vmin`,
+        ...at(s.x, s.y), height: `${s.len}%`, width: `${(s.w + (i % 3) * s.w * .6) * 2.5}vmin`,
         transform: `translateX(-50%) rotate(${ang}deg)`,
-        background: `linear-gradient(to bottom, ${s.color}, transparent)`,
+        background: `radial-gradient(ellipse 50% 100% at 50% 0%, ${s.color}, transparent 90%)`,
         animationDelay: `${i * 0.9}s`, animationDuration: `${5 + (i % 3) * 1.5}s`,
       }} />
     )

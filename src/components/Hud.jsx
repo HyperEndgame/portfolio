@@ -1,7 +1,7 @@
 // HUD: top-left info, F3 debug, sound toggle, vitals + XP + hotbar, toasts.
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
-import { Volume2, VolumeX } from 'lucide-react'
+import { AnimatePresence, m } from 'framer-motion'
+import Ico from './Ico'
 import Pixel from './Pixel'
 import { useTip } from './Tooltip'
 import { heart, food } from '../icons'
@@ -30,14 +30,14 @@ export function Info({ biome }) {
 }
 
 export function Debug({ biome, slot }) {
-  const [p, setP] = useState({ x: 0, y: 0, fps: 60 })
+  const [p, setP] = useState({ x: 0, y: 0, fps: 60, w: innerWidth, h: innerHeight })
   useEffect(() => {
     let frames = 0, last = performance.now(), raf, mx = 0, my = 0
     const move = (e) => { mx = e.clientX; my = e.clientY }
     const loop = (t) => {
       frames++
       if (t - last > 500) {
-        setP({ x: mx, y: my, fps: Math.round(frames * 1000 / (t - last)) })
+        setP({ x: mx, y: my, fps: Math.round(frames * 1000 / (t - last)), w: innerWidth, h: innerHeight })
         frames = 0; last = t
       }
       raf = requestAnimationFrame(loop)
@@ -53,7 +53,7 @@ export function Debug({ biome, slot }) {
     `Facing: ${p.x > innerWidth / 2 ? 'east (Towards positive X)' : 'west (Towards negative X)'}`,
     `Biome: rohtak:${biome.name.toLowerCase().replace(/ /g, '_')}`,
     `Slot: ${slot} / 9`,
-    `Display: ${innerWidth}x${innerHeight}`,
+    `Display: ${p.w}x${p.h}`,
   ]
   return (
     <div className="pointer-events-none absolute left-4 top-[74px] z-30 flex flex-col items-start gap-[2px] text-[12px]">
@@ -63,11 +63,10 @@ export function Debug({ biome, slot }) {
 }
 
 export function SoundToggle({ on, toggle }) {
-  const Icon = on ? Volume2 : VolumeX
   return (
     <button onClick={toggle} aria-label={on ? 'Mute sound (M)' : 'Enable sound (M)'} title="Sound (M)"
       className="mc-btn absolute right-4 top-3 z-40 grid h-10 w-10 place-items-center">
-      <Icon size={18} />
+      <Ico name={on ? 'volume' : 'mute'} size={18} />
     </button>
   )
 }
@@ -81,12 +80,12 @@ function Vitals({ level, xp }) {
         <div className="flex flex-row-reverse gap-[2px]">{row(food)}</div>
       </div>
       <div className="relative h-[9px] border-2 border-black bg-[#1b1b1b]">
-        <motion.div className="h-full bg-[#80ff20] shadow-[inset_0_-2px_0_#3d8c0f,inset_0_2px_0_#c4ff8a]"
+        <m.div className="h-full bg-[#80ff20] shadow-[inset_0_-2px_0_#3d8c0f,inset_0_2px_0_#c4ff8a]"
           animate={{ width: `${xp * 100}%` }} transition={{ duration: .8, ease: [0.22, 1, 0.36, 1] }} />
-        <motion.span key={level} initial={{ scale: 1.6 }} animate={{ scale: 1 }}
+        <m.span key={level} initial={{ scale: 1.6 }} animate={{ scale: 1 }}
           className="absolute -top-[19px] left-1/2 -translate-x-1/2 text-[15px] font-bold text-[#80ff20] [text-shadow:2px_0_#000,-2px_0_#000,0_2px_#000,0_-2px_#000]">
           {level}
-        </motion.span>
+        </m.span>
       </div>
     </div>
   )
@@ -97,18 +96,18 @@ export function Hotbar({ slot, go, level, xp }) {
   return (
     <div className="absolute bottom-3 left-1/2 z-[48] flex w-[min(96vw,500px)] -translate-x-1/2 flex-col items-center">
       <Vitals level={level} xp={xp} />
-      <nav aria-label="Hotbar" className="hb flex w-full gap-[2px] p-[3px]">
+      <nav aria-label="Hotbar" className="hb relative flex w-full gap-[2px] p-[3px]">
         {slots.map(s => (
           <button key={s.n} onClick={() => go(s.n)} aria-label={s.label} aria-current={slot === s.n}
             {...tip({ title: s.label, lore: s.lore, hint: `Press ${s.n}` })}
             className="hb-slot relative grid aspect-square flex-1 place-items-center">
             <span className="ts-sm absolute left-1 top-0 text-[9px] text-[#d0d0d0]">{s.n}</span>
-            <motion.span animate={{ scale: slot === s.n ? 1.12 : 1 }} transition={{ type: 'spring', stiffness: 500, damping: 22 }}>
-              <Pixel icon={s.icon} size={30} className="drop-shadow-[2px_2px_0_rgba(0,0,0,.35)]" />
-            </motion.span>
-            {slot === s.n && <motion.span layoutId="sel" className="hb-sel" transition={{ type: 'spring', stiffness: 600, damping: 38 }} />}
+            <Pixel icon={s.icon} size={30} className={`transition-transform duration-150 drop-shadow-[2px_2px_0_rgba(0,0,0,.35)] ${slot === s.n ? 'scale-110' : ''}`} />
           </button>
         ))}
+        {/* selector slides with a CSS transition: 9 slots, 2px gaps, 3px padding */}
+        <span className="hb-sel transition-[left] duration-150 ease-out"
+          style={{ left: `calc(3px + (100% - 22px) / 9 * ${slot - 1} + ${(slot - 1) * 2}px - 5px)`, width: 'calc((100% - 22px) / 9 + 10px)' }} />
       </nav>
       <div className="ts-sm mt-1.5 hidden gap-3 text-[10px] text-[#9a9a9a] sm:flex">
         <span><b className="text-[#d8d8d8]">1-9</b> select</span>
@@ -125,7 +124,7 @@ export function Toast({ toast }) {
   return (
     <AnimatePresence>
       {toast && (
-        <motion.div key={toast.title} role="status"
+        <m.div key={toast.title} role="status"
           className="fixed right-4 top-16 z-[80] flex w-[min(300px,calc(100vw-32px))] items-center gap-3 border-2 border-black bg-[#212121]/95 p-2.5 shadow-[inset_0_0_0_2px_#555]"
           initial={{ x: 340 }} animate={{ x: 0 }} exit={{ x: 340 }} transition={{ type: 'spring', stiffness: 260, damping: 26 }}>
           <div className="slot grid h-11 w-11 shrink-0 place-items-center"><Pixel icon={toast.icon} size={28} /></div>
@@ -133,7 +132,7 @@ export function Toast({ toast }) {
             <div className="text-[#ffff55]">Advancement Made!</div>
             <div>{toast.title}</div>
           </div>
-        </motion.div>
+        </m.div>
       )}
     </AnimatePresence>
   )

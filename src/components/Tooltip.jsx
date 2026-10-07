@@ -21,11 +21,14 @@ export function TipProvider({ children }) {
     return () => removeEventListener('mousemove', move)
   }, [])
 
-  const bind = useCallback((t) => ({
+  // touch screens fire mouseenter on tap and never leave: no tooltips there
+  const touch = useRef(matchMedia('(hover: none)').matches).current
+  const bind = useCallback((t) => touch ? {} : ({
     onMouseEnter: () => { setTip(t); play('hover') },
     onMouseLeave: () => setTip(null),
+    onFocus: () => setTip(t),
     onBlur: () => setTip(null),
-  }), [])
+  }), [touch])
 
   return (
     <Ctx.Provider value={bind}>
