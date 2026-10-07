@@ -142,7 +142,7 @@ export default function App() {
     <LazyMotion features={domAnimation} strict>
     <TipProvider reset={slot}>
       <main className="relative h-full w-full overflow-hidden">
-        <Background biome={b} side={L.panel} parallax={slot === 1} />
+        <Background biome={b} parallax={slot === 1} />
         {b.fx && <Particles fx={b.fx} />}
         {slot === 8 && <SleepingDog />}
         {L.view && <Player view={L.view} side={L.side} slot={slot} center={!boxed} />}

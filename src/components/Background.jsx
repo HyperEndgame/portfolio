@@ -106,22 +106,16 @@ function useLayers(biome) {
   return [r.base, ready]
 }
 
-export default function Background({ biome, side, parallax }) {
+export default function Background({ biome, parallax }) {
   const par = useParallax(parallax)
   const size = useSize()
   const [base, ready] = useLayers(biome)
-  const shade = side === 'right'
-    ? 'linear-gradient(270deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.15) 45%, transparent 70%)'
-    : 'linear-gradient(90deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.15) 45%, transparent 70%)'
   return (
     <div className="absolute inset-0 overflow-hidden bg-black" aria-hidden="true">
       <div ref={par} className="absolute -inset-6 transition-transform duration-300 ease-out">
         {[id(base) !== id(biome) && <Layer key={id(base)} biome={base} size={size} />,
           <Layer key={id(biome)} biome={biome} size={size} onReady={ready} />]}
       </div>
-      <div className="pointer-events-none absolute inset-0 transition-[background] duration-700" style={{ background: shade }} />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/70 to-transparent" />
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/45 to-transparent" />
     </div>
   )
 }

@@ -23,9 +23,9 @@ export default function Player({ view = 'front', side = 'right', slot, center })
             <Tag className="-top-7 right-0 md:-top-10 md:left-1/2 md:right-auto md:-translate-x-1/2 md:text-[18px]">{me.tag}</Tag>
           )}
           {slot === 3 && (
-            <div className="absolute bottom-0 right-full mr-1 h-[42%]">
-              <Tag className="-top-6 left-1/2 -translate-x-1/2 md:-top-9 md:text-[16px]">{me.pet.name}</Tag>
-              <img src={me.pet.sit} alt="" draggable="false" className="breathe h-full w-auto max-w-none md:drop-shadow-[0_10px_18px_rgba(0,0,0,.45)]" />
+            <div className="absolute bottom-0 right-full mr-1 aspect-[449/520] h-[42%]">
+              <Tag className="-top-7 left-1/2 -translate-x-1/2 text-[13px] md:-top-11 md:text-[20px]">{me.pet.name}</Tag>
+              <img src={me.pet.sit} alt="" draggable="false" className="breathe h-full w-full md:drop-shadow-[0_10px_18px_rgba(0,0,0,.45)]" />
             </div>
           )}
           <div className="bob relative h-full"><img src={src} alt="" draggable="false" className="px breathe h-full w-auto md:drop-shadow-[0_12px_24px_rgba(0,0,0,.45)]" /></div>
@@ -37,10 +37,10 @@ export default function Player({ view = 'front', side = 'right', slot, center })
 // Kylo napping under the contact book (desktop only: phones have the sheet there)
 export function SleepingDog() {
   return (
-    <m.div className="pointer-events-none absolute bottom-[118px] left-[9vw] z-20 hidden h-[13vh] max-h-[130px] md:block" aria-hidden="true"
+    <m.div className="pointer-events-none absolute bottom-[118px] left-[9vw] z-20 hidden aspect-[520/228] h-[13vh] max-h-[130px] md:block" aria-hidden="true"
       initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .5, delay: .2 }}>
-      <Tag className="-top-9 left-[38%] -translate-x-1/2 md:text-[16px]">{me.pet.name}</Tag>
-      <img src={me.pet.sleep} alt="" draggable="false" className="breathe h-full w-auto max-w-none drop-shadow-[0_10px_18px_rgba(0,0,0,.45)]" />
+      <Tag className="-top-11 left-1/2 -translate-x-1/2 text-[20px]">{me.pet.name}</Tag>
+      <img src={me.pet.sleep} alt="" draggable="false" className="breathe h-full w-full drop-shadow-[0_10px_18px_rgba(0,0,0,.45)]" />
     </m.div>
   )
 }
