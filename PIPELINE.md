@@ -171,3 +171,7 @@ Graphify: none yet.
 - Minor, not fixed: slot-3 dog is positioned `right-full` of the player; on phones (player centred) it may clip past the left edge (`main` overflow-hidden, no page scroll).
 - Minor: slot-3 dog has no enter animation (Player key unchanged between slots 2-4, by design).
 - Minor: SleepingDog z-20 sits under the book panel (z-45). Intended "under Contact", but the book may hide most of it on some viewports.
+
+## Vignette removal + Kylo tag (review, 2026-10-07, commit 8a27b9e)
+**Change:** Background.jsx drops side shade + top/bottom gradients and unused `side` prop (App updated). Kylo containers get `aspect-[449/520]` (sit) and `aspect-[520/228]` (sleep), img `w-full h-full`, nametag bigger and centred.
+**Haiku findings:** None breaking. Pet PNG ratios match exactly (dog-sit 449x520, dog-sleep 520x228), no distortion. Only Background usage is App.jsx (no stale `side` refs). Nametag/sleep container layout sound.
