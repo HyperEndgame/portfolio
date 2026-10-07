@@ -175,3 +175,7 @@ Graphify: none yet.
 ## Vignette removal + Kylo tag (review, 2026-10-07, commit 8a27b9e)
 **Change:** Background.jsx drops side shade + top/bottom gradients and unused `side` prop (App updated). Kylo containers get `aspect-[449/520]` (sit) and `aspect-[520/228]` (sleep), img `w-full h-full`, nametag bigger and centred.
 **Haiku findings:** None breaking. Pet PNG ratios match exactly (dog-sit 449x520, dog-sleep 520x228), no distortion. Only Background usage is App.jsx (no stale `side` refs). Nametag/sleep container layout sound.
+
+## Kylo tag/position tweak (review, 2026-10-07, commit 6138fcf)
+**Change:** Player.jsx only. Slot-3 Kylo tag moved to `left-[23%]` over his head. SleepingDog → `left-[22vw]`, `h-[15vh] max-h-[160px]`, `z-[46]` (above contact book z-45), tag `left-[24%]`.
+**Haiku findings:** None breaking. Tag positioned inside absolute containers (valid containing block). `z-[46]` arbitrary class valid. Visually verified per commit.
