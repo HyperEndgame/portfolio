@@ -30,6 +30,7 @@ export const me = {
   ],
   hobbies: ['Speedcubing', 'Linux ricing', 'Building with AI'],
   interests: ['Soccer', 'Coding', 'Nuclear chemistry', 'Calculus', 'Particle physics', 'Video games'],
+  pet: { name: 'Kylo', sit: img('dog-sit.png'), sleep: img('dog-sleep.png') },
   avatar: img('player-front.png'),
   head: img('player-head.png'),
   avatarBack: img('player-back.png'),

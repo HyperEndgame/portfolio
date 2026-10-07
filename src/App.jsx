@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { LazyMotion, domAnimation, m } from 'framer-motion'
 import Background from './components/Background'
 import Particles from './components/Particles'
-import Player from './components/Player'
+import Player, { SleepingDog } from './components/Player'
 import { TipProvider } from './components/Tooltip'
 import { Info, Debug, SoundToggle, Hotbar, Toast } from './components/Hud'
 import * as S from './components/Screens'
@@ -144,6 +144,7 @@ export default function App() {
       <main className="relative h-full w-full overflow-hidden">
         <Background biome={b} side={L.panel} parallax={slot === 1} />
         {b.fx && <Particles fx={b.fx} />}
+        {slot === 8 && <SleepingDog />}
         {L.view && <Player view={L.view} side={L.side} slot={slot} center={!boxed} />}
 
         <Info biome={b} />
