@@ -102,4 +102,6 @@ if (typeof window !== 'undefined') {
   const kick = () => { music.start(); removeEventListener('pointerdown', kick); removeEventListener('keydown', kick) }
   addEventListener('pointerdown', kick)
   addEventListener('keydown', kick)
+  // don't keep composing in a background tab
+  document.addEventListener('visibilitychange', () => document.hidden ? music.stop() : ctx && music.start())
 }

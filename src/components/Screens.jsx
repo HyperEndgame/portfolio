@@ -46,7 +46,7 @@ export function Menu({ go }) {
         
         <Btn className="w-full" onClick={() => go(6)}>Advancements</Btn>
       </div>
-      <p className="ts mt-4 text-[11px] text-[#bdbdbd]">Press 1-9 or click the hotbar</p>
+      <p className="ts mt-4 text-[11px] text-[#bdbdbd]"><span className="md:hidden">Tap the hotbar or swipe</span><span className="hidden md:inline">Press 1-9 or click the hotbar</span></p>
     </div>
   )
 }
@@ -103,7 +103,7 @@ export function Skills() {
 export function Builds({ go }) {
   const tip = useTip()
   const [sel, setSel] = useState(null)
-  const cells = [...projects, ...Array(12 - projects.length).fill(null)]
+  const cells = [...projects, ...Array(Math.max(0, 12 - projects.length)).fill(null)]
   const p = projects[sel]
   return (
     <>

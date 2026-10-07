@@ -94,7 +94,7 @@ function Vitals({ level, xp }) {
 export function Hotbar({ slot, go, level, xp }) {
   const tip = useTip()
   return (
-    <div className="absolute bottom-3 left-1/2 z-[48] flex w-[min(96vw,500px)] -translate-x-1/2 flex-col items-center">
+    <div className="absolute bottom-3 left-1/2 z-[48] flex w-[min(96vw,500px)] select-none -translate-x-1/2 flex-col items-center">
       <Vitals level={level} xp={xp} />
       <nav aria-label="Hotbar" className="hb relative flex w-full gap-[2px] p-[3px]">
         {slots.map(s => (

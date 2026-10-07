@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { AnimatePresence, m } from 'framer-motion'
 import Ambience from './Ambience'
-import { scenes } from '../data'
+import { scenes, photo } from '../data'
 
 function useParallax(on) {
   const ref = useRef()
@@ -45,13 +45,13 @@ function cover({ w, h }, [iw, ih], pos, zoom) {
 }
 
 // photo fades in once decoded; its ambience waits so lights never float over black
-function Photo({ src, width, filter, scene }) {
+function Photo({ src, filter, scene }) {
   const [ready, setReady] = useState(false)
   const ref = useRef()
   useEffect(() => { if (ref.current?.complete) setReady(true) }, [])
   return (
     <>
-      <img ref={ref} src={src} srcSet={`${src.replace('.webp', '-1280.webp')} 1280w, ${src} 1920w`} sizes={`${Math.round(width)}px`}
+      <img ref={ref} src={photo(src)}
         alt="" decoding="async" draggable="false" onLoad={() => setReady(true)}
         className={`h-full w-full transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}`} style={{ filter }} />
       {ready && <Ambience scene={scene} />}
@@ -79,7 +79,7 @@ export default function Background({ biome, side, parallax }) {
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}>
             <div className="kenburns absolute inset-0" style={{ transformOrigin: pos }}>
               <div className="absolute" style={box}>
-                <Photo src={src} width={box.width} filter={filter} scene={scene} />
+                <Photo src={src} filter={filter} scene={scene} />
               </div>
             </div>
           </m.div>

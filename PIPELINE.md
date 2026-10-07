@@ -83,3 +83,15 @@ Graphify: none yet.
 - All UTF-8 valid (em-dash in icons.js header properly encoded).
 - CRLF line endings on several src files (Windows); minor cosmetic issue, not breaking.
 - None breaking.
+
+## Review 1: full-site review (2026-10-07)
+**Findings → fixes (Opus review, Sonnet fix):**
+- Tooltip stuck after click that changes screen (trades → contact) — mouseleave never fires on unmount. Fix: TipProvider `reset={slot}` clears tip.
+- srcSet never served 1280w on phones (portrait cover needs ~1500 CSS px) and preload fetched 1280 → double download. Fix: one `photo()` helper in data.js used by <img> and preload (phones <768px → 1280).
+- Builds grid `Array(12 - n)` throws when >12 projects. Fix: Math.max(0, …).
+- Mobile nametag under sound button / clipped. Fix: phone character top-[86px] h-[18vh], tag right-aligned on phones; menu pt-[26vh].
+- Music kept composing in background tabs. Fix: visibilitychange stop/start.
+- `select-none` on <main> blocked selecting email/bio text. Fix: only on hotbar.
+- Menu hint said "Press 1-9" on phones. Fix: "Tap the hotbar or swipe" below md.
+- Checked OK: gzip + 4h cache on live assets, keyboard/wheel/swipe handlers, listener cleanup, toast timers, LazyMotion strict (no motion.*).
+**Haiku findings:** (pending)

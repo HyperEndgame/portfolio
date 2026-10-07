@@ -3,6 +3,9 @@ import * as I from './icons'
 
 const img = (f) => `${import.meta.env.BASE_URL}img/${f}`
 
+// phones get the 1280px photos (portrait crops are blurred/filtered anyway); desktop gets 1920px
+export const photo = (src) => innerWidth < 768 ? src.replace('.webp', '-1280.webp') : src
+
 export const me = {
   name: 'Rohtak',
   tag: 'Hyper_Endgame',

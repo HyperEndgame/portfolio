@@ -6,7 +6,7 @@ import Player from './components/Player'
 import { TipProvider } from './components/Tooltip'
 import { Info, Debug, SoundToggle, Hotbar, Toast } from './components/Hud'
 import * as S from './components/Screens'
-import { biomes } from './data'
+import { biomes, photo } from './data'
 import * as I from './icons'
 import { play, isOn, setOn } from './sound'
 
@@ -79,8 +79,7 @@ function useSwipe(cycle) {
 // warm the cache so the first visit to each biome doesn't flash black
 function usePreload() {
   useEffect(() => {
-    const small = innerWidth < 1100
-    const srcs = [...new Set(Object.values(biomes).map(b => small ? b.src.replace('.webp', '-1280.webp') : b.src))]
+    const srcs = [...new Set(Object.values(biomes).map(b => photo(b.src)))]
     const id = setTimeout(() => srcs.forEach(s => { new Image().src = s }), 600)
     return () => clearTimeout(id)
   }, [])
@@ -139,8 +138,8 @@ export default function App() {
 
   return (
     <LazyMotion features={domAnimation} strict>
-    <TipProvider>
-      <main className="relative h-full w-full select-none overflow-hidden">
+    <TipProvider reset={slot}>
+      <main className="relative h-full w-full overflow-hidden">
         <Background biome={b} side={L.panel} parallax={slot === 1} />
         <Particles fx={b.fx} />
         {L.view && <Player view={L.view} side={L.side} slot={slot} center={!boxed} />}
@@ -161,7 +160,7 @@ export default function App() {
             </m.section>
           ) : (
             <m.section key={slot} aria-label={b.name}
-              className={`absolute inset-x-0 top-0 bottom-[150px] z-30 flex items-center justify-center px-4 pt-[22vh] md:pt-0 ${slot === 1 ? 'md:pr-[22vw]' : 'md:pr-[18vw]'}`}
+              className={`absolute inset-x-0 top-0 bottom-[150px] z-30 flex items-center justify-center px-4 pt-[26vh] md:pt-0 ${slot === 1 ? 'md:pr-[22vw]' : 'md:pr-[18vw]'}`}
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: .3 }}>
               {screens[slot]}
             </m.section>

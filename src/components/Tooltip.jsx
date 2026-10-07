@@ -5,9 +5,12 @@ import { play } from '../sound'
 const Ctx = createContext(() => ({}))
 export const useTip = () => useContext(Ctx)
 
-export function TipProvider({ children }) {
+export function TipProvider({ children, reset }) {
   const [tip, setTip] = useState(null)
   const box = useRef()
+
+  // the hovered element may unmount (screen change) without firing mouseleave
+  useEffect(() => setTip(null), [reset])
 
   useEffect(() => {
     const move = (e) => {
