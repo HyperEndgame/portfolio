@@ -152,3 +152,13 @@ Graphify: none yet.
 - `parallax={slot === 1}` and `seen` init on slot 1 are screen-index based. Slot 1 now carries `petals` fx, so the near-particle layer runs there on desktop. Perf note only, not breaking.
 - Slot 2 `video` path: Background handles `video` without kenburns. Correct.
 - None breaking.
+
+## Profile favourites + project photos (2026-10-07, commit 34706d3)
+**Plan (Opus):** Profile gets Favourites/Hobbies/Interests sections (data in `me.favs|hobbies|interests`). Builds projects take optional `imgs` (public/img/proj-*.webp) as linked thumbnails. Slot 2 joins wide panel set (`[2,4,8]`). Bearden/Scouts journey text + "Perfect Score" advancement.
+**Code:** data.js (favs/hobbies/interests, imgs on mouse + PC, journey, advancements); Screens.jsx (Section + Chips helpers, Profile sections, Builds img grid); App.jsx (wide set). Assets: proj-mouse, proj-pc, proj-printer .webp.
+**Haiku findings:**
+- All `imgs` files exist in public/img. `img()` uses BASE_URL, valid.
+- PANEL_POS has `wideleft` for slot 2 (panel left) and slot 8; `wideright` for slot 4. No missing key.
+- Chip keys (hobbies/interests) and favs keys unique. Img keys unique per project.
+- `I.star` exists (already used in journey). `p.imgs` guarded by `&&`.
+- None breaking.
