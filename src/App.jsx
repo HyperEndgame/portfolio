@@ -111,6 +111,7 @@ const FINE = matchMedia('(hover: hover) and (min-width: 768px)').matches // desk
 const PANEL_POS = {
   wideleft: 'md:left-[4vw] md:w-[min(720px,58vw)] md:!top-[9vh] md:!max-h-[calc(91vh-170px)]',
   wideright: 'md:right-[4vw] md:w-[min(720px,58vw)] md:!top-[9vh] md:!max-h-[calc(91vh-170px)]',
+  center: 'md:left-1/2 md:-translate-x-1/2 md:w-[min(580px,50vw)]',
   left: 'md:left-[5vw] md:w-[min(540px,46vw)]',
   right: 'md:right-[5vw] md:w-[min(500px,44vw)]',
 }
