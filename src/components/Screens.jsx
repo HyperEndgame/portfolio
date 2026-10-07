@@ -37,7 +37,7 @@ export function Menu({ go }) {
           Powered by redstone!
         </span>
       </div>
-      <p className="ts mb-8 mt-14 bg-black/45 sm:mt-9 px-3 py-1 text-[14px] tracking-[.3em] text-white sm:text-[16px]">MY PORTFOLIO</p>
+      <p className="ts glass mb-8 mt-14 bg-black/45 sm:mt-9 px-3 py-1 text-[14px] tracking-[.3em] text-white sm:text-[16px]">MY PORTFOLIO</p>
       <div className="flex w-full max-w-[440px] flex-col gap-2.5">
         <Btn className="w-full" onClick={() => go(2)}>Enter World</Btn>
         <Btn className="w-full" onClick={() => go(4)}>View Builds</Btn>
@@ -127,9 +127,9 @@ export function Builds({ go }) {
         <m.div key={sel} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="row mt-3 p-4">
           <div className="flex flex-wrap items-baseline justify-between gap-2">
             <div className="ts text-[17px]" style={{ color: p.rarity }}>{p.title}</div>
-            <span className="text-[11px] text-[#55ff55]">{p.status}</span>
+            <span className={`text-[11px] ${p.status === 'Archived' ? 'text-[var(--gray)]' : 'text-[#55ff55]'}`}>{p.status}</span>
           </div>
-          <div className="mt-0.5 text-[11px] italic text-[var(--gray)]">{p.role}</div>
+          <div className="mt-0.5 text-[11px] italic text-[var(--gray)]">{p.kind}{p.when && ` · ${p.when}`}</div>
           <p className="mt-2 text-[13px] leading-relaxed text-[#e0e0e0]">{p.desc}</p>
           <ul className="mt-2 space-y-1">
             {p.highlights.map(h => <li key={h} className="flex gap-2 text-[12px] text-[#d4d4d4]"><span className="text-[#ffcf4a]">▸</span>{h}</li>)}

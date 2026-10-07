@@ -125,7 +125,7 @@ export function Toast({ toast }) {
     <AnimatePresence>
       {toast && (
         <m.div key={toast.title} role="status"
-          className="fixed right-4 top-16 z-[80] flex w-[min(300px,calc(100vw-32px))] items-center gap-3 border-2 border-black bg-[#212121]/95 p-2.5 shadow-[inset_0_0_0_2px_#555]"
+          className="fixed right-4 top-16 z-[80] flex w-[min(300px,calc(100vw-32px))] items-center gap-3 glass border-2 border-black bg-[#212121]/75 p-2.5 shadow-[inset_0_0_0_2px_#555]"
           initial={{ x: 340 }} animate={{ x: 0 }} exit={{ x: 340 }} transition={{ type: 'spring', stiffness: 260, damping: 26 }}>
           <div className="slot grid h-11 w-11 shrink-0 place-items-center"><Pixel icon={toast.icon} size={28} /></div>
           <div className="text-[13px]">

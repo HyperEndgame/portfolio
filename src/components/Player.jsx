@@ -15,7 +15,7 @@ export default function Player({ view = 'front', side = 'right', slot, center })
           transition={{ duration: .45, ease: [0.22, 1, 0.36, 1] }}>
           <div className="absolute -bottom-2 left-1/2 h-5 w-[80%] -translate-x-1/2 rounded-[50%] bg-black/50 blur-md" />
           {slot === 1 && (
-            <div className="ts-sm absolute -top-7 right-0 whitespace-nowrap bg-black/40 px-1.5 py-0.5 text-[11px] text-white md:-top-10 md:left-1/2 md:right-auto md:-translate-x-1/2 md:px-2 md:text-[18px]">
+            <div className="ts-sm absolute -top-7 right-0 glass whitespace-nowrap bg-black/40 px-1.5 py-0.5 text-[11px] text-white md:-top-10 md:left-1/2 md:right-auto md:-translate-x-1/2 md:px-2 md:text-[18px]">
               {me.tag}
             </div>
           )}

@@ -16,7 +16,7 @@
 }
 
 :root {
-  --panel: rgba(16, 16, 18, .88);
+  --panel: rgba(16, 16, 18, .7);
   --edge: #5c5c5c;
   --row: rgba(255, 255, 255, .035);
   --row-edge: #3a3a3a;
@@ -63,6 +63,7 @@ img.px, svg.px { image-rendering: pixelated; shape-rendering: crispEdges; }
 /* ---------- GUI window ---------- */
 .panel {
   background: var(--panel);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
   border: 2px solid #050505;
   box-shadow: inset 0 0 0 2px var(--edge), inset 0 0 0 4px rgba(0, 0, 0, .55), 0 18px 50px rgba(0, 0, 0, .55);
 }
@@ -103,6 +104,7 @@ img.px, svg.px { image-rendering: pixelated; shape-rendering: crispEdges; }
 /* ---------- hotbar ---------- */
 .hb {
   background: rgba(20, 20, 20, .55);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   border: 2px solid #050505;
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .12);
 }
@@ -184,6 +186,9 @@ img.px, svg.px { image-rendering: pixelated; shape-rendering: crispEdges; }
 .scroll-y::-webkit-scrollbar { width: 6px; }
 .scroll-y::-webkit-scrollbar-thumb { background: #555; }
 
+/* frosted glass for small translucent bits (toast, nametag, title band) */
+.glass { backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+
 /* phone particles (CSS-only, see Particles.jsx) */
 .pt { position: absolute; top: 0; will-change: transform; animation: pt-down linear infinite; }
 .pt-up { animation-name: pt-up; }
@@ -203,6 +208,8 @@ img.px, svg.px { image-rendering: pixelated; shape-rendering: crispEdges; }
   /* static lights/shafts: no per-frame compositing of big gradient layers */
   .amb-light, .amb-shaft, .breathe { animation: none; will-change: auto; }
   .amb-light { transform: translate(-50%, -50%); opacity: .7; }
+  /* lighter blur on phones: backdrop blur is re-rendered whenever what is behind it moves */
+  .panel, .hb, .glass { backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
   .amb-shaft { opacity: .65; }
 }
 
