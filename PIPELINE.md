@@ -22,4 +22,9 @@ Graphify: none yet.
 ## Feature 2: full redesign to match reference (2026-10-07)
 **Plan (Opus):** User rejected v1 (procedural SVG looked nothing like the reference). Rebuild against the reference screenshots: user's own photo backgrounds, user's character render (front/back cutouts), translucent dark GUI panels w/ bordered rows, MC button, hotbar w/ sliding white selector, hearts/hunger/XP that rises per new screen, advancement toasts, cursor tooltips, F3 overlay, written-book contact, centered End screen. Removed mini-game. Content from LinkedIn (edu, robotics, Sci Oly, orchestra, BSA, AI Fluency cert, True Blue 100).
 **Code:** files above. 5 photos serve 9 biomes via crop/zoom/filter. Verified all 9 slots desktop (1440x860) + mobile (375) in browser.
-**Haiku findings:** (pending)
+**Haiku findings:**
+- No breaking issues found. All imports/exports correct, React hooks properly scoped with cleanup, event listeners cleaned up, keyboard/wheel handlers working correctly. Build passes without errors or warnings.
+
+## Fix: Railway deploy failed (2026-10-07)
+- Cause: `scripts/icons.py` wrote `src/icons.js` with Windows cp1252 (em dash in header) → nixpacks "stream did not contain valid UTF-8".
+- Fix: `write_text(..., encoding='utf-8')`. Always write generated files as UTF-8.
