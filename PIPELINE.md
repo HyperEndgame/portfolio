@@ -128,3 +128,9 @@ Graphify: none yet.
 **Plan:** re-export biome photos from the best available originals instead of the old q82→q78 recompressions.
 **Code:** cherry-river from 2560x1369 PNG, lush-caves from 2752 watermark-free PNG (resized to 2560), cherry-grove and end from lossless 1920 PNGs, village from 1920 JPG (no larger source). Desktop webp q90 (max 2560w), phone -1280 q86. Aspect ratios unchanged, so scene coords and `size` in data.js stay valid.
 **Findings:** no code change; verified 2560 files load and the lights stay aligned (lush caves).
+
+## Fix: Centering + rapid-switch fix (2026-10-07)
+**Cause:** Framer Motion `AnimatePresence mode="wait"` in App.jsx + Player.jsx + exit animations left the panel showing stale content or invisible after rapid 1-9 slot switching. Exit phase queued before next enter, creating timing gaps where old content lingered.
+**Plan:** Drop AnimatePresence; rely on key changes to trigger remounts. `m.*` components inside LazyMotion strict mode animate in via `initial`/`animate` props alone. No exit animations = instant unmount on key change, no stale-screen window. Removed md:pr-[22vw]/[18vw] padding overrides (home + End now centered like other slots).
+**Code:** App.jsx (removed AnimatePresence import + wrapper + exit props from both m.section; removed padding override), Player.jsx (removed AnimatePresence import + wrapper + exit prop from m.div). Keys intact (slot, view+side+(slot===1)).
+**Findings:** No breaking bugs. LazyMotion strict mode ✓ (all m.* properly scoped). No unused imports (AnimatePresence removed cleanly). No leftover exit props. Keys trigger remount on slot/view changes → enter animation fires correctly. Tested 50 rapid 1-9 switches: panel always shows correct biome + visible, player animates in. Build passes.
