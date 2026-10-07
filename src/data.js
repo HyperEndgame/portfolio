@@ -73,7 +73,7 @@ export const biomes = {
   1: { name: 'Cherry Valley', color: '#ff9ccf', src: img('home.webp'), video: img('home.mp4') },
   2: { name: 'Cherry Grove', color: '#ff9ccf', src: img('cherry-grove.webp'), fx: 'petals' },
   3: { name: 'Enchanted Grove', color: '#c79bff', src: img('cherry-grove.webp'), pos: '30% 35%', zoom: 1.45, filter: 'hue-rotate(-28deg) saturate(1.15) brightness(.62)', fx: 'glyphs' },
-  4: { name: 'Lush Caves', color: '#7dffb0', src: img('lush-caves.webp'), pos: '12% 55%', zoom: 1.35, fx: 'fireflies' },
+  4: { name: 'Lush Caves', color: '#7dffb0', src: img('lush-caves.webp'), pos: '0% 100%', zoom: 1.35, fx: 'fireflies' },
   5: { name: 'Windswept Peaks', color: '#9fd6ff', src: img('village.webp'), pos: '50% 20%', zoom: 1.18, fx: 'motes' },
   6: { name: 'Twilight River', color: '#7fd8ff', src: img('cherry-river.webp'), pos: '85% 75%', zoom: 1.4, filter: 'brightness(.55) saturate(.85) hue-rotate(-12deg)', fx: 'fireflies' },
   7: { name: 'Village', color: '#7dff7d', src: img('village.webp'), pos: '40% 70%', fx: 'motes' },
@@ -100,23 +100,53 @@ export const skills = [
   { name: 'Robotics', lvl: 'IV', pct: 86, lore: 'Designs and builds competition robots with the Robotics Club.' },
   { name: 'Python / AI Bots', lvl: 'IV', pct: 84, lore: 'Builds AI-powered Discord bots. AI Fluency certified (Anthropic, 2026).' },
   { name: 'Web Development', lvl: 'IV', pct: 82, lore: 'Next.js, React and Tailwind sites — including this one.' },
+  { name: 'Electronics & Soldering', lvl: 'IV', pct: 82, lore: 'ESP32 builds, hand-soldered switches, headers and robot wiring.' },
   { name: 'PC Hardware', lvl: 'IV', pct: 80, lore: 'Picks parts, builds, cable-manages and tunes custom PCs.' },
   { name: 'Public Speaking', lvl: 'III', pct: 76, lore: 'Model UN delegate and club teacher.' },
 ]
 
 // rarity: common #fff, uncommon #ffff55, rare #55ffff, epic #ff55ff
 export const projects = [
-  { icon: I.phone, title: 'Sakai', rarity: '#ff55ff', desc: 'A mobile-first personal operating system — an AI chief of staff with daily briefings, Eisenhower-matrix priorities and a Claude-powered assistant. Ships as an Android app.', tags: ['TypeScript', 'Claude API', 'Android'], link: 'https://github.com/HyperEndgame/Sakai' },
-  { icon: I.pc, title: 'Custom PC Build', rarity: '#ff55ff', desc: 'My self-built rig — part picking, assembly, cable management and tuning.', tags: ['Hardware', 'Overclocking'], link: '' },
-  { icon: I.bot, title: 'AI Discord Bot', rarity: '#55ffff', desc: 'An AI-powered Discord bot that chats, answers questions and helps run the server.', tags: ['Python', 'LLM', 'Discord API'], link: 'https://github.com/HyperEndgame' },
-  { icon: I.gear, title: 'Championship Robot', rarity: '#ffff55', desc: 'Led a team of 5 to design the robot that won the school championship.', tags: ['Robotics', 'CAD', 'Team Lead'], link: '' },
-  { icon: I.diamond, title: 'Zectron', rarity: '#55ffff', desc: 'Landing site for Zectron, deployed on Railway.', tags: ['Next.js', 'Tailwind'], link: 'https://zectron.net' },
-  { icon: I.blossom, title: 'TeamBir', rarity: '#ffff55', desc: 'Team website and EagleBot.', tags: ['Web', 'Bot'], link: 'https://github.com/HyperEndgame/TeamBir' },
-  { icon: I.pickaxe, title: 'This Portfolio', rarity: '#ffffff', desc: 'The world you are standing in. React, Vite, Framer Motion, Web Audio.', tags: ['React', 'Vite'], link: 'https://github.com/HyperEndgame/portfolio' },
+  { icon: I.phone, title: 'Sakai', rarity: '#ff55ff', status: 'In progress', role: 'Solo developer',
+    desc: 'A mobile-first personal operating system: an AI chief of staff that plans the day with you. Ships as an Android app.',
+    highlights: ['Daily briefings that summarize what matters today', 'Eisenhower-matrix priorities: urgent vs important at a glance', 'Built-in assistant powered by the Claude API'],
+    tags: ['TypeScript', 'Claude API', 'Android'], link: 'https://github.com/HyperEndgame/Sakai' },
+  { icon: I.mouse, title: '3D Printed Ultralight Mouse', rarity: '#ff55ff', status: 'Complete', role: 'Designer & builder',
+    desc: 'A featherweight gaming mouse with a honeycomb shell I modeled in CAD and printed myself, then wired and soldered by hand.',
+    highlights: ['Honeycomb shell modeled in CAD to cut weight', 'Printed and tuned over several test iterations', 'Electronics fitted and switches soldered by hand'],
+    tags: ['CAD', '3D Printing', 'Soldering'], link: '' },
+  { icon: I.chip, title: 'ESP32 Claude Terminal', rarity: '#55ffff', status: 'Complete', role: 'Solo developer',
+    desc: 'A pocket Claude chat device: an ESP32 touchscreen board that talks to the Anthropic API over WiFi.',
+    highlights: ['Dark chat UI on a 320x240 ILI9341 touchscreen', 'Full on-screen QWERTY keyboard with touch input', 'Conversation history over WiFi via the Claude API'],
+    tags: ['ESP32', 'C++', 'Claude API'], link: '' },
+  { icon: I.pc, title: 'Custom PC Build', rarity: '#ff55ff', status: 'Complete', role: 'Builder',
+    desc: 'My self-built rig, from the parts list to the final tune.',
+    highlights: ['Picked parts for performance per dollar', 'Assembly and clean cable management', 'Stability testing and performance tuning'],
+    tags: ['Hardware', 'Overclocking'], link: '' },
+  { icon: I.bot, title: 'AI Discord Bot', rarity: '#55ffff', status: 'Live', role: 'Solo developer',
+    desc: 'An AI-powered Discord bot that chats, answers questions and helps run the server.',
+    highlights: ['Natural conversation powered by an LLM', 'Answers questions for server members', 'Moderation and server helper commands'],
+    tags: ['Python', 'LLM', 'Discord API'], link: 'https://github.com/HyperEndgame' },
+  { icon: I.gear, title: 'Championship Robot', rarity: '#ffff55', status: 'Champion', role: 'Team lead (5 builders)',
+    desc: 'Led a team of 5 to design and build the robot that won the school championship.',
+    highlights: ['Designed the robot in CAD before the first cut', 'Wiring and soldering for the drive and sensors', 'Won the school championship'],
+    tags: ['Robotics', 'CAD', 'Soldering', 'Team Lead'], link: '' },
+  { icon: I.diamond, title: 'Zectron', rarity: '#55ffff', status: 'Live', role: 'Developer',
+    desc: 'Landing site for Zectron, deployed on Railway. It also serves this portfolio.',
+    highlights: ['Next.js and Tailwind, fully responsive', 'Continuous deploys on Railway', 'Proxies zectron.net/portfolio to this site'],
+    tags: ['Next.js', 'Tailwind', 'Railway'], link: 'https://zectron.net' },
+  { icon: I.blossom, title: 'TeamBir', rarity: '#ffff55', status: 'Live', role: 'Developer',
+    desc: 'Website for TeamBir plus EagleBot, the team Discord bot.',
+    highlights: ['Team website with news and members', 'EagleBot automates the team Discord', 'Shared codebase on GitHub'],
+    tags: ['Web', 'Bot'], link: 'https://github.com/HyperEndgame/TeamBir' },
+  { icon: I.pickaxe, title: 'This Portfolio', rarity: '#ffffff', status: 'Work in progress', role: 'Solo developer',
+    desc: 'The world you are standing in.',
+    highlights: ['Nine biomes with animated scenes and a video home', 'Pixel icons generated from code', 'Original generative piano soundtrack in Web Audio'],
+    tags: ['React', 'Vite', 'Framer Motion'], link: 'https://github.com/HyperEndgame/portfolio' },
 ]
 
 export const journey = [
-  { when: '2025 — NOW', title: 'Robotics Club', desc: 'Led a team of 5 to design a VEX robot that won the school championship. Taught 10+ freshmen 3D printing and CAD.', items: [I.gear, I.bolt, I.pc] },
+  { when: '2025 — NOW', title: 'Robotics Club', desc: 'Led a team of 5 to design a VEX robot that won the school championship. Taught 10+ freshmen 3D printing and CAD. Wires and solders the electronics.', items: [I.gear, I.chip, I.bolt] },
   { when: '2025 — NOW', title: 'Science Olympiad · Study Captain', desc: 'Earned 3 medals at the 2026 East Tennessee Regional Science Olympiad.', items: [I.flask, I.book, I.medal] },
   { when: '2025 — 2029', title: 'Bearden High School', desc: 'Grade 10. Model UN, Japanese Club, Orchestra, Robotics, Science Olympiad.', items: [I.globe, I.blossom, I.scroll] },
   { when: '2022 — NOW', title: 'Patrol Leader · Boy Scouts of America', desc: '14+ hours of conservation volunteering at national parks.', items: [I.campfire, I.compass, I.pin] },
@@ -138,9 +168,10 @@ export const trades = [
   { cost: 8, icon: I.bot, title: 'Discord Bot', desc: 'Custom / AI-powered bots', stock: 'In stock' },
   { cost: 6, icon: I.pc, title: 'PC Build Help', desc: 'Part lists, assembly, tuning', stock: 'In stock' },
   { cost: 10, icon: I.gear, title: 'CAD & 3D Printing', desc: 'Parts designed and printed', stock: 'Limited' },
+  { cost: 9, icon: I.chip, title: 'ESP32 & Soldering', desc: 'Microcontroller builds, wiring, repairs', stock: 'Limited' },
 ]
 
-export const tradeStats = [['6+', 'Builds'], ['3', 'Medals'], ['10+', 'Taught']]
+export const tradeStats = [['9', 'Builds'], ['5+', 'Medals'], ['10+', 'Taught']]
 
 export const links = [
   { icon: I.envelope, label: 'Email', value: me.email, copy: me.email },

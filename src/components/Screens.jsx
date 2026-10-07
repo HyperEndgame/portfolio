@@ -14,9 +14,12 @@ const item = { hidden: { opacity: 0, y: 8 }, show: { opacity: 1, y: 0, transitio
 const Stagger = ({ className, children }) => <m.div variants={list} initial="hidden" animate="show" className={className}>{children}</m.div>
 const Item = ({ className, children, ...p }) => <m.div variants={item} className={className} {...p}>{children}</m.div>
 
-const Title = ({ children, right }) => (
+const Title = ({ children, right, sub }) => (
   <div className="mb-4 flex items-baseline justify-between gap-3">
-    <h2 className="ts text-[19px] font-bold text-white">{children}</h2>
+    <div>
+      <h2 className="ts text-[19px] font-bold text-white">{children}</h2>
+      {sub && <p className="mt-1 text-[13px] text-[#55ff55]">{sub}</p>}
+    </div>
     {right && <span className="text-[12px] text-[var(--gray)]">{right}</span>}
   </div>
 )
@@ -30,11 +33,11 @@ export function Menu({ go }) {
     <div className="flex w-full max-w-[640px] flex-col items-center text-center">
       <div className="relative mb-2">
         <h1 className="logo whitespace-nowrap text-[clamp(34px,6vw,76px)] leading-none">{me.full}</h1>
-        <span className="splash ts absolute -top-6 right-0 whitespace-nowrap text-[11px] sm:top-auto sm:-right-14 sm:bottom-1 sm:text-[15px]">
-          Now with 100% more blocks!
+        <span className="splash ts absolute -bottom-9 right-0 whitespace-nowrap text-[11px] sm:-bottom-8 sm:-right-10 sm:text-[15px]">
+          Powered by redstone!
         </span>
       </div>
-      <p className="ts mb-9 mt-4 text-[12px] tracking-[.35em] text-[#bdbdbd]">MY PORTFOLIO</p>
+      <p className="ts mb-8 mt-14 bg-black/45 sm:mt-9 px-3 py-1 text-[14px] tracking-[.3em] text-white sm:text-[16px]">MY PORTFOLIO</p>
       <div className="flex w-full max-w-[440px] flex-col gap-2.5">
         <Btn className="w-full" onClick={() => go(2)}>Enter World</Btn>
         <Btn className="w-full" onClick={() => go(4)}>View Builds</Btn>
@@ -102,28 +105,35 @@ export function Skills() {
 
 export function Builds({ go }) {
   const tip = useTip()
-  const [sel, setSel] = useState(null)
+  const [sel, setSel] = useState(0)
   const cells = [...projects, ...Array(Math.max(0, 12 - projects.length)).fill(null)]
   const p = projects[sel]
   return (
     <>
-      <Title>Chest — Completed Builds</Title>
+      <Title right={`${projects.length} / ${cells.length} slots`}>Chest — Completed Builds</Title>
       <Stagger className="grid grid-cols-6 gap-1">
         {cells.map((c, i) => c ? (
           <Item key={i}>
             <button aria-label={c.title} onClick={() => { play('click'); setSel(i) }}
               {...tip({ title: c.title, lore: c.tags.join(' · '), color: c.rarity, hint: 'Click for details' })}
               className={`slot-dark relative grid aspect-square w-full place-items-center ${sel === i ? 'outline outline-2 outline-white' : ''}`}>
-              <Pixel icon={c.icon} size={34} className="drop-shadow-[2px_2px_0_rgba(0,0,0,.4)]" />
+              <Pixel icon={c.icon} size={40} className="drop-shadow-[2px_2px_0_rgba(0,0,0,.4)]" />
               <span className="absolute bottom-1 right-1 h-1.5 w-1.5" style={{ background: c.rarity }} />
             </button>
           </Item>
         ) : <Item key={i} className="slot-dark aspect-square" />)}
       </Stagger>
       {p ? (
-        <m.div key={sel} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="row mt-3 p-3">
-          <div className="ts text-[15px]" style={{ color: p.rarity }}>{p.title}</div>
-          <p className="mt-1 text-[12px] leading-relaxed text-[#d4d4d4]">{p.desc}</p>
+        <m.div key={sel} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} className="row mt-3 p-4">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <div className="ts text-[17px]" style={{ color: p.rarity }}>{p.title}</div>
+            <span className="text-[11px] text-[#55ff55]">{p.status}</span>
+          </div>
+          <div className="mt-0.5 text-[11px] italic text-[var(--gray)]">{p.role}</div>
+          <p className="mt-2 text-[13px] leading-relaxed text-[#e0e0e0]">{p.desc}</p>
+          <ul className="mt-2 space-y-1">
+            {p.highlights.map(h => <li key={h} className="flex gap-2 text-[12px] text-[#d4d4d4]"><span className="text-[#ffcf4a]">▸</span>{h}</li>)}
+          </ul>
           <div className="mt-2 flex flex-wrap gap-1.5">
             {p.tags.map(t => <span key={t} className="border border-[#3a0a8a] bg-black/40 px-2 py-0.5 text-[11px] text-[#aaaaff]">{t}</span>)}
           </div>
@@ -132,7 +142,7 @@ export function Builds({ go }) {
               className="mc-btn mt-3 inline-flex h-9 items-center gap-2 px-4 text-[13px]">Open <Ico name="external" size={13} /></a>
           )}
         </m.div>
-      ) : <Hint>Hover an item for details</Hint>}
+      ) : null}
       <Btn className="mt-4" onClick={() => go(7)}>See Trades</Btn>
     </>
   )
@@ -191,7 +201,7 @@ export function Trades({ go }) {
   const tip = useTip()
   return (
     <>
-      <Title right="Master Builder · Level 5">Villager Trades</Title>
+      <Title right="Master Builder · Level 5" sub="Services offered">Villager Trades</Title>
       <Stagger className="flex flex-col gap-1.5">
         {trades.map(t => (
           <Item key={t.title}>
@@ -234,16 +244,16 @@ function LinkRow({ l }) {
   }
   const body = (
     <>
-      <Pixel icon={l.icon} size={22} />
+      <Pixel icon={l.icon} size={26} />
       <span className="min-w-0 flex-1">
         <span className="block text-[10px] tracking-[.2em] opacity-60">{l.label.toUpperCase()}</span>
-        <span className="block truncate text-[14px]">{l.value}</span>
+        <span className="block truncate text-[15px]">{l.value}</span>
       </span>
       {l.copy && (copied ? <Ico name="check" size={15} className="text-[#2a7a2a]" /> : <Ico name="copy" size={15} className="opacity-50" />)}
       {l.href && <Ico name="external" size={15} className="opacity-50" />}
     </>
   )
-  const cls = 'row flex w-full items-center gap-3 px-1 py-2.5 text-left'
+  const cls = 'row flex w-full items-center gap-3 px-1 py-3 text-left'
   if (l.href) return <a href={l.href} target="_blank" rel="noreferrer" onClick={() => play('click')} className={cls}>{body}</a>
   if (l.copy) return <button onClick={copy} className={cls} aria-label={`Copy ${l.label}`}>{body}</button>
   return <div className={cls}>{body}</div>
@@ -252,8 +262,8 @@ function LinkRow({ l }) {
 export function Contact({ go }) {
   return (
     <>
-      <h2 className="text-[20px] font-bold">Let's Connect</h2>
-      <p className="mb-3 mt-1 text-[12px] italic opacity-70">Send word and I will answer within 48 hours.</p>
+      <h2 className="text-[24px] font-bold">Let's Connect</h2>
+      <p className="mb-4 mt-1 text-[13px] italic opacity-70">Send word and I will answer within 48 hours.</p>
       <Stagger>
         {links.map(l => <Item key={l.label}><LinkRow l={l} /></Item>)}
       </Stagger>

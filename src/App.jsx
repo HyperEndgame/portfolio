@@ -15,12 +15,12 @@ const LAYOUT = {
   1: { panel: 'center', view: 'front', side: 'right' },
   2: { panel: 'left', view: 'front', side: 'right' },
   3: { panel: 'left', view: 'front', side: 'right' },
-  4: { panel: 'left', view: 'front', side: 'right' },
-  5: { panel: 'left', view: 'back', side: 'right' },
-  6: { panel: 'right', view: 'back', side: 'left' },
+  4: { panel: 'right', view: 'front', side: 'left' },
+  5: { panel: 'left', view: 'front', side: 'right' },
+  6: { panel: 'left', view: 'front', side: 'right' },
   7: { panel: 'left', view: 'front', side: 'right' },
   8: { panel: 'left', view: null },
-  9: { panel: 'center', view: 'back', side: 'right' },
+  9: { panel: 'center', view: 'front', side: 'right' },
 }
 
 const TOASTS = {
@@ -109,6 +109,8 @@ const NEAR = new Set(['petals', 'fireflies', 'glyphs', 'end'])
 const FINE = matchMedia('(hover: hover) and (min-width: 768px)').matches // desktop: afford the extra layer
 
 const PANEL_POS = {
+  wideleft: 'md:left-[4vw] md:w-[min(720px,58vw)] md:!top-[9vh] md:!max-h-[calc(91vh-170px)]',
+  wideright: 'md:right-[4vw] md:w-[min(720px,58vw)] md:!top-[9vh] md:!max-h-[calc(91vh-170px)]',
   left: 'md:left-[5vw] md:w-[min(540px,46vw)]',
   right: 'md:right-[5vw] md:w-[min(500px,44vw)]',
 }
@@ -151,7 +153,7 @@ export default function App() {
         {/* no AnimatePresence mode="wait": fast switches left it stuck on a stale or invisible panel */}
           {boxed ? (
             <m.section key={slot} data-scroll aria-label={b.name}
-              className={`${slot === 8 ? 'book' : 'panel'} scroll-y fixed inset-x-3 bottom-[150px] ${L.view ? 'top-[38vh]' : 'top-[84px]'} z-[45] p-5 md:absolute md:inset-x-auto md:bottom-auto md:top-[15vh] md:max-h-[calc(85vh-190px)] md:p-6 ${PANEL_POS[L.panel]}`}
+              className={`${slot === 8 ? 'book' : 'panel'} scroll-y fixed inset-x-3 bottom-[150px] ${L.view ? 'top-[38vh]' : 'top-[84px]'} z-[45] p-5 md:absolute md:inset-x-auto md:bottom-auto md:top-[15vh] md:max-h-[calc(85vh-190px)] md:p-6 ${PANEL_POS[(slot === 4 || slot === 8 ? 'wide' : '') + L.panel]}`}
               initial={{ opacity: 0, x: enter }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: .28, ease: [0.22, 1, 0.36, 1] }}>

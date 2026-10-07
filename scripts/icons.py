@@ -541,6 +541,47 @@ c.rows(4, 1, [
 c.outline('#0e0e10')
 icons['phone'] = c
 
+# 3D-printed ultralight mouse: honeycomb shell, split buttons, scroll wheel
+c = C()
+c.rows(3, 1, [
+    "...kkkkkk...",
+    "..kWWWkWWWk.",
+    ".kWWWWkWWWWk",
+    ".kWWWWRWWWWk",
+    ".kWWWWRWWWWk",
+    ".kkkkkkkkkkk",
+    ".kWhWWhWWhWk",
+    ".kWWhWWhWWWk",
+    ".kWhWWhWWhWk",
+    ".kWWhWWhWWWk",
+    ".kWhWWhWWhWk",
+    "..kWWhWWhWk.",
+    "...kWWWWWk..",
+    "....kkkkk...",
+], {'k': '#2a2a30', 'W': '#eeeef2', 'h': '#3a3a44', 'R': '#ff5a5a'})
+c.outline('#0e0e10')
+icons['mouse'] = c
+
+# ESP32 dev board: green PCB, metal RF shield, antenna trace, header pins
+c = C()
+c.rows(1, 2, [
+    "..............",
+    "PPPPPPPPPPPPPP",
+    "PGGGGGGGGGGGGP",
+    "PGAAAGSSSSSSGP",
+    "PGAGAGSssssSGP",
+    "PGAAAGSssssSGP",
+    "PGGGGGSssssSGP",
+    "PGGGGGSSSSSSGP",
+    "PGGbGGGGGGGGGP",
+    "PGGGGGGGGuuGGP",
+    "PGGGGGGGGuuGGP",
+    "PPPPPPPPPPPPPP",
+    "Y.Y.Y.Y.Y.Y.Y.",
+], {'P': '#0f5a2c', 'G': '#1b7a3e', 'A': '#d8b04a', 'S': '#c8ccd2', 's': '#9aa0aa', 'b': '#4aa8ff', 'u': '#cfcfcf', 'Y': '#ffd23a'})
+c.outline('#06200f')
+icons['chip'] = c
+
 # --- hud ---------------------------------------------------------------------
 c = C(9)
 c.rows(0, 0, [
