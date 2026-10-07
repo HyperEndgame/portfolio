@@ -123,3 +123,8 @@ Graphify: none yet.
 **Plan:** Desktop video now uses `<source>` list: AV1 1440p primary, HEVC 1440p secondary, H.264 1080p fallback. Phones keep H.264 1280. Verified codec strings and source logic.
 **Code:** Background.jsx `sources()` helper → innerWidth conditional (phones get 1-source list, desktop 3 sources). Codec type strings: `av01.0.12M.08` (AV1), `hvc1.1.6.L150.B0` (HEVC), fallback H.264 typeless. `onLoadedData` event works correctly with `<source>` children.
 **Findings:** No breaking bugs. readyState/ready logic unaffected by `<source>` children; onLoadedData fires once playable. Fallback chain (AV1→HEVC→H.264) ensures playback even if codec strings mismatch. `photo()` applied consistently to all sources. Phones/desktop conditional correct on 768px breakpoint.
+
+## Background quality (2026-10-07)
+**Plan:** re-export biome photos from the best available originals instead of the old q82→q78 recompressions.
+**Code:** cherry-river from 2560x1369 PNG, lush-caves from 2752 watermark-free PNG (resized to 2560), cherry-grove and end from lossless 1920 PNGs, village from 1920 JPG (no larger source). Desktop webp q90 (max 2560w), phone -1280 q86. Aspect ratios unchanged, so scene coords and `size` in data.js stay valid.
+**Findings:** no code change; verified 2560 files load and the lights stay aligned (lush caves).
