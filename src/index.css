@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body, #root { height: 100%; margin: 0; background: #111; overflow: hidden; }
+body { font-family: 'Pixelify Sans', monospace; color: #fff; -webkit-font-smoothing: none; }
+svg.px { shape-rendering: crispEdges; image-rendering: pixelated; }
+
+.ts { text-shadow: 2px 2px 0 rgba(0,0,0,.8); }
+.ts-lg { text-shadow: 4px 4px 0 #3f3f3f, 6px 6px 0 rgba(0,0,0,.5); }
+
+/* GUI window (chest / inventory style) */
+.mc-panel {
+  background: rgba(24,24,24,.88);
+  border: 3px solid #000;
+  box-shadow: inset 3px 3px 0 #4a4a4a, inset -3px -3px 0 #151515, 0 10px 30px rgba(0,0,0,.5);
+  backdrop-filter: blur(2px);
+}
+
+/* Title-screen button */
+.mc-btn {
+  font-family: 'Pixelify Sans', monospace;
+  background: linear-gradient(#8a8a8a, #6c6c6c);
+  border: 2px solid #000;
+  box-shadow: inset 2px 2px 0 #b5b5b5, inset -2px -3px 0 #4a4a4a;
+  color: #e0e0e0; text-shadow: 2px 2px 0 #3a3a3a;
+  transition: none;
+}
+.mc-btn:hover, .mc-btn:focus-visible {
+  outline: 2px solid #fff; outline-offset: -2px; color: #ffffa0;
+  background: linear-gradient(#9aa0c8, #7078a8);
+}
+.mc-btn:active { box-shadow: inset -2px -2px 0 #b5b5b5, inset 2px 3px 0 #4a4a4a; }
+
+/* Inventory slot */
+.mc-slot {
+  background: #8b8b8b;
+  box-shadow: inset 2px 2px 0 #373737, inset -2px -2px 0 #fff;
+}
+.mc-slot:hover { background: #a8a8a8; }
+
+/* Hotbar slot */
+.hb-slot { background: rgba(30,30,30,.7); border: 2px solid #555; box-shadow: inset 2px 2px 0 rgba(0,0,0,.6); }
+.hb-active { outline: 3px solid #fff; outline-offset: 1px; box-shadow: 0 0 0 5px rgba(0,0,0,.6); }
+
+/* Tooltip */
+.mc-tip {
+  background: rgba(16,0,16,.94);
+  border: 2px solid #240854;
+  box-shadow: inset 0 0 0 1px #5000aa;
+}
+
+.splash { animation: splash .5s ease-in-out infinite alternate; }
+@keyframes splash { from { transform: rotate(-20deg) scale(1); } to { transform: rotate(-20deg) scale(1.08); } }
+
+.drift { animation: drift linear infinite; }
+@keyframes drift { from { transform: translateX(-30%); } to { transform: translateX(130%); } }
+
+.crack { background-image: repeating-linear-gradient(45deg, transparent 0 6px, rgba(0,0,0,.45) 6px 8px); }
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-thumb { background: #555; }
+
+@media (prefers-reduced-motion: reduce) {
+  .splash, .drift { animation: none; }
+}
