@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react'
 
 const FX = {
-  petals: { n: 42, c: ['#ffb7d2', '#ff9ec4', '#ffd0e2', '#f6a8c8'], vx: [.4, 1.2], vy: [.5, 1.1], s: [15, 26], kind: 'petal' },
+  petals: { n: 42, c: ['#ffb7d2', '#ff9ec4', '#ffd0e2', '#f6a8c8'], vx: [.4, 1.2], vy: [.5, 1.1], s: [12, 20], kind: 'petal' },
   fireflies: { n: 38, c: ['#ffe27a', '#fff2b0', '#ffd04a'], vx: [-.25, .25], vy: [-.3, .1], s: [2, 3], kind: 'glow' },
   embers: { n: 30, c: ['#ffb35c', '#ffd28a', '#ff8a3a'], vx: [-.2, .2], vy: [-.5, -.15], s: [2, 3], kind: 'glow' },
   motes: { n: 40, c: ['#ffffff', '#fff6d8'], vx: [-.15, .25], vy: [-.12, .12], s: [2, 3], kind: 'glow' },
@@ -15,24 +15,17 @@ const RUNES = ['111101111', '010111010', '110011110', '101010101', '111100111', 
 
 const rand = ([a, b]) => a + Math.random() * (b - a)
 
-// pre-rendered cherry petal: notched teardrop, pale tip to pink base, centre vein
+// blocky petal: 5x5 pixel sprite, drawn scaled up with no smoothing
+const PETAL = ['.LL..', 'LPPP.', 'PPPPD', '.PPDD', '..DD.']
 const sprites = {}
 function petal(color) {
   if (sprites[color]) return sprites[color]
   const c = document.createElement('canvas'), x = c.getContext('2d')
-  c.width = c.height = 32
-  const g = x.createLinearGradient(16, 2, 16, 30)
-  g.addColorStop(0, '#fff3f8'); g.addColorStop(.55, color); g.addColorStop(1, '#e77fa8')
-  x.fillStyle = g
-  x.beginPath()
-  x.moveTo(16, 30)
-  x.bezierCurveTo(3, 22, 3, 7, 10, 2)
-  x.quadraticCurveTo(13, 2, 16, 7)
-  x.quadraticCurveTo(19, 2, 22, 2)
-  x.bezierCurveTo(29, 7, 29, 22, 16, 30)
-  x.fill()
-  x.strokeStyle = 'rgba(255,255,255,.45)'; x.lineWidth = 1
-  x.beginPath(); x.moveTo(16, 27); x.quadraticCurveTo(15, 18, 16, 10); x.stroke()
+  c.width = c.height = 5
+  const pal = { L: '#ffe4ef', P: color, D: '#e483aa' }
+  PETAL.forEach((row, y) => [...row].forEach((ch, i) => {
+    if (pal[ch]) { x.fillStyle = pal[ch]; x.fillRect(i, y, 1, 1) }
+  }))
   return (sprites[color] = c)
 }
 
@@ -50,11 +43,11 @@ function spawn(cfg, w, h, fresh) {
 function draw(cx, cfg, p, t) {
   cx.fillStyle = p.c
   if (cfg.kind === 'petal') {
-    // spin + flip on one axis = tumbling petal
-    cx.setTransform(1, 0, 0, 1, p.x, p.y)
-    cx.rotate(p.rot + t * (.6 + p.p * .1))
-    cx.scale(Math.cos(t * 1.7 + p.p), 1)
-    cx.globalAlpha = .95
+    // game-style: no smooth spin, just a stepped flip as it flutters down
+    const flip = Math.cos(t * 2 + p.p) > 0 ? 1 : -1
+    cx.imageSmoothingEnabled = false
+    cx.setTransform(flip, 0, 0, 1, Math.round(p.x), Math.round(p.y))
+    cx.globalAlpha = 1
     cx.drawImage(petal(p.c), -p.s / 2, -p.s / 2, p.s, p.s)
     cx.setTransform(1, 0, 0, 1, 0, 0)
     return

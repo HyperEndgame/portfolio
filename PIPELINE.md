@@ -68,3 +68,8 @@ Graphify: none yet.
 - All src files valid UTF-8, gesture listener cleanup correct (self-removing), RAF re-queue/cancel pair matched, Particles mobile 30fps throttle correct (skip draw not RAF), data.js slot 3 matches plan (cherry-grove, glyphs, purple).
 - None breaking.
 - Player key reuse across slots 2-4 is intentional: character stays put when only the panel changes.
+
+## Feature 6: content + polish round (2026-10-07)
+**Plan (Opus):** Remove radial vignette; parallax only on slot 1 (Background `parallax` prop, resets transform); blocky 5x5 pixel petals w/ stepped flip (no smooth spin); HUD shows real day-of-month + local time; name → "Rohtak Harith", subtitle → "MY PORTFOLIO"; nametag "Hyper_Endgame" above player on home; Spawn → Bangalore, India + Home Base Knoxville, TN; Class → Student; VEX only in Robotics Club journey entry; contact "within 48 hours"; Sakai project (public repo); hand-drawn 10x10 head icon (auto-sampling broke right eye) + phone icon.
+**Code:** data.js, Hud.jsx (useClock), Screens.jsx, Background.jsx, App.jsx, Player.jsx (nametag), Particles.jsx (petal sprite), scripts/icons.py (head, phone), index.html title.
+**Haiku findings:** (pending)

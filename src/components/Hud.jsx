@@ -7,22 +7,22 @@ import { useTip } from './Tooltip'
 import { heart, food } from '../icons'
 import { me, slots } from '../data'
 
-// 1 real second = 1 in-game minute
+// real day of the month + local time
 function useClock() {
-  const [m, setM] = useState(6 * 60 + 30)
+  const [now, setNow] = useState(() => new Date())
   useEffect(() => {
-    const id = setInterval(() => setM(v => v + 1), 1000)
+    const id = setInterval(() => setNow(new Date()), 1000)
     return () => clearInterval(id)
   }, [])
-  const hh = String(Math.floor((m % 1440) / 60)).padStart(2, '0')
-  return `Day ${Math.floor(m / 1440) + 1} · ${hh}:${String(m % 60).padStart(2, '0')}`
+  const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })
+  return `Day ${now.getDate()} · ${time}`
 }
 
 export function Info({ biome }) {
   const clock = useClock()
   return (
     <div className="ts pointer-events-none absolute left-4 top-3 z-30 text-[12px] leading-[1.7] text-[#e8e8e8] sm:text-[13px]">
-      <div>{me.name} Builds <span className="text-[#55ff55]">v1.0.0</span></div>
+      <div>{me.full} <span className="text-[#55ff55]">v1.0.0</span></div>
       <div>Biome: <span style={{ color: biome.color }}>{biome.name}</span></div>
       <div>{clock}</div>
     </div>
@@ -47,7 +47,7 @@ export function Debug({ biome, slot }) {
     return () => { cancelAnimationFrame(raf); removeEventListener('mousemove', move) }
   }, [])
   const rows = [
-    `${me.name} Builds 1.0.0 (portfolio/vanilla)`,
+    `${me.full} 1.0.0 (portfolio/vanilla)`,
     `${p.fps} fps`,
     `XYZ: ${(p.x / 10).toFixed(3)} / 64.00000 / ${(p.y / 10).toFixed(3)}`,
     `Facing: ${p.x > innerWidth / 2 ? 'east (Towards positive X)' : 'west (Towards negative X)'}`,

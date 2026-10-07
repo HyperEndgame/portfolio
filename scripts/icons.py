@@ -522,6 +522,25 @@ c.rows(1, 2, [
 c.outline('#0a0c10')
 icons['github'] = c
 
+c = C()
+c.rows(4, 1, [
+    "kkkkkkkk",
+    "kbbbbbbk",
+    "kbPPPPbk",
+    "kbbbbbbk",
+    "kbGGbYbk",
+    "kbGGbYbk",
+    "kbbbbbbk",
+    "kbPPPPbk",
+    "kbbbbbbk",
+    "kbbbbbbk",
+    "kbbbbbbk",
+    "kkkWWkkk",
+    "kkkkkkkk",
+], {'k': '#2a2a2e', 'b': '#1e3a5f', 'P': '#ff7aa8', 'G': '#4ae07a', 'Y': '#ffd23a', 'W': '#9a9a9a'})
+c.outline('#0e0e10')
+icons['phone'] = c
+
 # --- hud ---------------------------------------------------------------------
 c = C(9)
 c.rows(0, 0, [
@@ -551,18 +570,20 @@ c.rows(0, 0, [
 icons['food'] = c
 
 
-def player_head():
-    """8x8 face sampled from the player's own render."""
-    src = Image.open(ROOT / 'public/img/player-front.png').convert('RGBA')
-    w = src.width
-    box = (int(w * .16), int(w * .02), int(w * .84), int(w * .70))
-    face = src.crop(box).resize((10, 10), Image.NEAREST)
-    cv = C(10)
-    cv.im = face
-    return cv
-
-
-icons['head'] = player_head()
+c = C(10)
+c.rows(0, 0, [
+    ".HHHHHHHH.",
+    "HHHhHHhHHH",
+    "HHhHHHHhHH",
+    "HHSHHHHSHH",
+    "HSHHSSHHSH",
+    "HSWESSEWSH",
+    "HSSSSSSSSH",
+    "HSSSmmSSSH",
+    ".HSSSSSSH.",
+    "..ssssss..",
+], {'H': '#151515', 'h': '#2c2c2c', 'S': '#c98552', 's': '#a96a3e', 'W': '#f4f4f4', 'E': '#1c140e', 'm': '#b07040'})
+icons['head'] = c  # hand-drawn from the player render (auto-sampling misaligned the right eye)
 
 
 def encode(cv):

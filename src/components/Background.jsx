@@ -4,10 +4,11 @@ import { AnimatePresence, m } from 'framer-motion'
 import Ambience from './Ambience'
 import { scenes } from '../data'
 
-function useParallax() {
+function useParallax(on) {
   const ref = useRef()
   useEffect(() => {
-    if (matchMedia('(pointer: coarse)').matches) return
+    if (ref.current) ref.current.style.transform = ''
+    if (!on || matchMedia('(pointer: coarse)').matches) return
     let raf
     const move = (e) => {
       cancelAnimationFrame(raf)
@@ -19,7 +20,7 @@ function useParallax() {
     }
     addEventListener('mousemove', move)
     return () => { removeEventListener('mousemove', move); cancelAnimationFrame(raf) }
-  }, [])
+  }, [on])
   return ref
 }
 
@@ -58,8 +59,8 @@ function Photo({ src, width, filter, scene }) {
   )
 }
 
-export default function Background({ biome, side }) {
-  const par = useParallax()
+export default function Background({ biome, side, parallax }) {
+  const par = useParallax(parallax)
   const size = useSize()
   const { src, pos = '50% 50%', zoom = 1, filter = 'none' } = biome
   const scene = scenes[src.split('/').pop()] || { size: [1920, 1080] }
@@ -85,7 +86,6 @@ export default function Background({ biome, side }) {
         </AnimatePresence>
       </div>
       <div className="pointer-events-none absolute inset-0 transition-[background] duration-700" style={{ background: shade }} />
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_55%,rgba(0,0,0,.55)_100%)]" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/70 to-transparent" />
       <div className="pointer-events-none absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-black/45 to-transparent" />
     </div>

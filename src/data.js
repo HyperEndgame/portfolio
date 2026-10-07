@@ -5,18 +5,20 @@ const img = (f) => `${import.meta.env.BASE_URL}img/${f}`
 
 export const me = {
   name: 'Rohtak',
+  tag: 'Hyper_Endgame',
   full: 'Rohtak Harith',
   email: 'rohtak.harith@gmail.com',
   location: 'Knoxville, TN',
   github: 'https://github.com/HyperEndgame',
   linkedin: 'https://www.linkedin.com/in/rohtak-harith-a11a33403/',
   instagram: 'https://www.instagram.com/rohtak_harith/',
-  bio: 'Sophomore at Bearden High School who builds things — VEX robots, custom PCs, AI Discord bots and websites. Science Olympiad medalist, first-chair viola, Scouts patrol leader.',
+  bio: 'Sophomore at Bearden High School who builds things — robots, custom PCs, AI Discord bots and websites. Science Olympiad medalist, first-chair viola, Scouts patrol leader.',
   stats: [
-    ['Class', 'Student Builder'],
+    ['Class', 'Student'],
     ['Level', '10 · Sophomore'],
     ['Guild', 'Bearden High School'],
-    ['Spawn', 'Knoxville, TN'],
+    ['Spawn', 'Bangalore, India'],
+    ['Home Base', 'Knoxville, TN'],
     ['Status', 'Online · accepting quests'],
   ],
   avatar: img('player-front.png'),
@@ -90,9 +92,9 @@ export const slots = [
 
 // TODO: tune levels — self-assessed placeholders
 export const skills = [
-  { name: 'Leadership', lvl: 'V', pct: 92, lore: 'Patrol Leader since 2022. Led a 5-person VEX team to a school championship.' },
+  { name: 'Leadership', lvl: 'V', pct: 92, lore: 'Patrol Leader since 2022. Led a 5-person robotics team to a school championship.' },
   { name: 'CAD / 3D Printing', lvl: 'V', pct: 90, lore: 'Taught 10+ new freshmen the fundamentals of 3D printing and CAD.' },
-  { name: 'Robotics (VEX)', lvl: 'IV', pct: 86, lore: 'Designs and builds competition robots with the Robotics Club.' },
+  { name: 'Robotics', lvl: 'IV', pct: 86, lore: 'Designs and builds competition robots with the Robotics Club.' },
   { name: 'Python / AI Bots', lvl: 'IV', pct: 84, lore: 'Builds AI-powered Discord bots. AI Fluency certified (Anthropic, 2026).' },
   { name: 'Web Development', lvl: 'IV', pct: 82, lore: 'Next.js, React and Tailwind sites — including this one.' },
   { name: 'PC Hardware', lvl: 'IV', pct: 80, lore: 'Picks parts, builds, cable-manages and tunes custom PCs.' },
@@ -101,9 +103,10 @@ export const skills = [
 
 // rarity: common #fff, uncommon #ffff55, rare #55ffff, epic #ff55ff
 export const projects = [
+  { icon: I.phone, title: 'Sakai', rarity: '#ff55ff', desc: 'A mobile-first personal operating system — an AI chief of staff with daily briefings, Eisenhower-matrix priorities and a Claude-powered assistant. Ships as an Android app.', tags: ['TypeScript', 'Claude API', 'Android'], link: 'https://github.com/HyperEndgame/Sakai' },
   { icon: I.pc, title: 'Custom PC Build', rarity: '#ff55ff', desc: 'My self-built rig — part picking, assembly, cable management and tuning.', tags: ['Hardware', 'Overclocking'], link: '' },
   { icon: I.bot, title: 'AI Discord Bot', rarity: '#55ffff', desc: 'An AI-powered Discord bot that chats, answers questions and helps run the server.', tags: ['Python', 'LLM', 'Discord API'], link: 'https://github.com/HyperEndgame' },
-  { icon: I.gear, title: 'Championship VEX Robot', rarity: '#ffff55', desc: 'Led a team of 5 to design the VEX robot that won the school championship.', tags: ['VEX', 'CAD', 'Team Lead'], link: '' },
+  { icon: I.gear, title: 'Championship Robot', rarity: '#ffff55', desc: 'Led a team of 5 to design the robot that won the school championship.', tags: ['Robotics', 'CAD', 'Team Lead'], link: '' },
   { icon: I.diamond, title: 'Zectron', rarity: '#55ffff', desc: 'Landing site for Zectron, deployed on Railway.', tags: ['Next.js', 'Tailwind'], link: 'https://zectron.net' },
   { icon: I.blossom, title: 'TeamBir', rarity: '#ffff55', desc: 'Team website and EagleBot.', tags: ['Web', 'Bot'], link: 'https://github.com/HyperEndgame/TeamBir' },
   { icon: I.pickaxe, title: 'This Portfolio', rarity: '#ffffff', desc: 'The world you are standing in. React, Vite, Framer Motion, Web Audio.', tags: ['React', 'Vite'], link: 'https://github.com/HyperEndgame/portfolio' },
@@ -120,7 +123,7 @@ export const journey = [
 export const advancements = [
   { icon: I.trophy, title: 'True Blue 100', desc: 'Top 100 Freshman in TN 2025–26 (MTSU)' },
   { icon: I.medal, title: 'Podium Finish', desc: '3 medals · 2026 E. TN Regional Sci Oly' },
-  { icon: I.gear, title: 'Champion Build', desc: 'VEX robot won the school championship' },
+  { icon: I.gear, title: 'Champion Build', desc: 'Robot won the school championship' },
   { icon: I.scroll, title: 'AI Fluent', desc: 'AI Fluency: Framework & Foundations · Anthropic' },
   { icon: I.viola, title: 'First Chair', desc: 'First chair viola, Orchestra' },
   { icon: I.campfire, title: 'Patrol Leader', desc: 'Leading a Scouts patrol since 2022' },

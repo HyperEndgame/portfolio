@@ -141,7 +141,7 @@ export default function App() {
     <LazyMotion features={domAnimation} strict>
     <TipProvider>
       <main className="relative h-full w-full select-none overflow-hidden">
-        <Background biome={b} side={L.panel} />
+        <Background biome={b} side={L.panel} parallax={slot === 1} />
         <Particles fx={b.fx} />
         {L.view && <Player view={L.view} side={L.side} slot={slot} center={!boxed} />}
 

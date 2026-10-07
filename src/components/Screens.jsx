@@ -29,12 +29,12 @@ export function Menu({ go }) {
   return (
     <div className="flex w-full max-w-[640px] flex-col items-center text-center">
       <div className="relative mb-2">
-        <h1 className="logo whitespace-nowrap text-[clamp(34px,6vw,76px)] leading-none">{me.name} Builds</h1>
+        <h1 className="logo whitespace-nowrap text-[clamp(34px,6vw,76px)] leading-none">{me.full}</h1>
         <span className="splash ts absolute -top-6 right-0 whitespace-nowrap text-[11px] sm:top-auto sm:-right-14 sm:bottom-1 sm:text-[15px]">
           Now with 100% more blocks!
         </span>
       </div>
-      <p className="ts mb-9 mt-4 text-[12px] tracking-[.35em] text-[#bdbdbd]">SURVIVAL · HARD MODE</p>
+      <p className="ts mb-9 mt-4 text-[12px] tracking-[.35em] text-[#bdbdbd]">MY PORTFOLIO</p>
       <div className="flex w-full max-w-[440px] flex-col gap-2.5">
         <Btn className="w-full" onClick={() => go(2)}>Enter World</Btn>
         <Btn className="w-full" onClick={() => go(4)}>View Builds</Btn>
@@ -253,7 +253,7 @@ export function Contact({ go }) {
   return (
     <>
       <h2 className="text-[20px] font-bold">Let's Connect</h2>
-      <p className="mb-3 mt-1 text-[12px] italic opacity-70">Send word and I will answer within a day.</p>
+      <p className="mb-3 mt-1 text-[12px] italic opacity-70">Send word and I will answer within 48 hours.</p>
       <Stagger>
         {links.map(l => <Item key={l.label}><LinkRow l={l} /></Item>)}
       </Stagger>
