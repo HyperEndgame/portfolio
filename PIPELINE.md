@@ -140,3 +140,15 @@ Graphify: none yet.
 **Code:** scripts/icons.py (pixel mouse + ESP32 chip), data.js (9 builds with new fields, skills array +1), Screens.jsx (Builds default sel=0, detailed card with status/role/highlights, Title sub prop), App.jsx (LAYOUT all 'front' view, PANEL_POS wideleft/wideright for slots 4+8, conditional lookup).
 **Findings:** One breaking bug: PANEL_POS missing 'center' key → slots 1 and 9 panel lookup returns undefined, breaking desktop layout. Fix: restored center key to PANEL_POS with center-aligned Tailwind classes. All projects have highlights (no crash on .map). Icons mouse/chip generated and exported. Build passes post-fix.
 - Sonnet: reverted haiku's PANEL_POS.center addition; center screens (home/End) render in their own unboxed section and never read PANEL_POS, so the key was dead code.
+
+## Resume pass review (2026-10-07, commit f904baa)
+**Plan (Opus):** Review-only pass on resume rewrite: data.js (skills, projects `kind`/`when`, journey, advancements, biome swap 1↔2, lush caves zoom removed), Screens Builds card, index.css blur, `.glass` on toast/nametag/title band.
+**Code:** None. No source edits. Review only.
+**Haiku findings:**
+- No remaining `role` refs in src (grep clean).
+- All icon names used in data.js (incl. quill, food, heart, briefcase, chest, grass, head, pearl) exist in `src/icons.js` exports. No undefined icon in journey/advancements/trades.
+- Builds card: `p.kind` / `p.when` render safely; `Archived` grey branch correct.
+- Player nametag still keyed to `slot === 1`. Correct: slot 1 is still the center-panel screen (LAYOUT keyed by slot index, not biome). Not a bug.
+- `parallax={slot === 1}` and `seen` init on slot 1 are screen-index based. Slot 1 now carries `petals` fx, so the near-particle layer runs there on desktop. Perf note only, not breaking.
+- Slot 2 `video` path: Background handles `video` without kenburns. Correct.
+- None breaking.
