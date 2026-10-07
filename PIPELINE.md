@@ -94,4 +94,4 @@ Graphify: none yet.
 - `select-none` on <main> blocked selecting email/bio text. Fix: only on hotbar.
 - Menu hint said "Press 1-9" on phones. Fix: "Tap the hotbar or swipe" below md.
 - Checked OK: gzip + 4h cache on live assets, keyboard/wheel/swipe handlers, listener cleanup, toast timers, LazyMotion strict (no motion.*).
-**Haiku findings:** (pending)
+**Haiku findings:** None breaking. All fixes verified: Tooltip.jsx reset prop + effect (line 8,13), App.jsx TipProvider reset={slot} (line 141), usePreload uses photo() (line 82), data.js photo helper uses innerWidth (line 7), Background.jsx uses photo(src) (line 54), Screens.jsx Math.max(0, 12-n) (line 106), Player.jsx mobile classes (line 9,20), sound.js visibilitychange handler (line 106), Hud.jsx select-none on hotbar wrapper (line 97), Menu hint conditional (line 49). Build: 267KB JS, 26KB CSS. All src files valid UTF-8.
