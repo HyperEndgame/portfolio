@@ -118,3 +118,8 @@ Graphify: none yet.
 **Plan:** Slot 1 (Cherry Valley → "Home") plays looping muted video (1920p desktop, 1280p phones) with still-image poster. Ambience disabled (video supplies motion). Ken Burns disabled. Particles removed.
 **Code:** Slot 1 `src: home.webp` → poster; `video: home.mp4` (muted loop, calls play() on readyState≥2 for desktop autoplay fallback). `photo()` regex updated: `/\.(webp|mp4)$/` → `-1280.$1` (matches both file types). `Photo` component: conditional render (video vs img), `onLoadedData` for video ready state. `App.jsx`: guard `{b.fx && <Particles/>}` (slot 1 has no fx).
 **Findings:** No breaking bugs. Regex correct for both webp/mp4. `readyState >= 2` check safe on img elements (optional chaining → undefined, fails gracefully). Video poster and src both use photo() helper → consistent 1280px on phones. Particles guard prevents crash when fx undefined.
+
+## Review 2: home video quality (2026-10-07)
+**Plan:** Desktop video now uses `<source>` list: AV1 1440p primary, HEVC 1440p secondary, H.264 1080p fallback. Phones keep H.264 1280. Verified codec strings and source logic.
+**Code:** Background.jsx `sources()` helper → innerWidth conditional (phones get 1-source list, desktop 3 sources). Codec type strings: `av01.0.12M.08` (AV1), `hvc1.1.6.L150.B0` (HEVC), fallback H.264 typeless. `onLoadedData` event works correctly with `<source>` children.
+**Findings:** No breaking bugs. readyState/ready logic unaffected by `<source>` children; onLoadedData fires once playable. Fallback chain (AV1→HEVC→H.264) ensures playback even if codec strings mismatch. `photo()` applied consistently to all sources. Phones/desktop conditional correct on 768px breakpoint.
