@@ -84,6 +84,12 @@ Graphify: none yet.
 - CRLF line endings on several src files (Windows); minor cosmetic issue, not breaking.
 - None breaking.
 
+## Fix: mobile particles CSS (2026-10-07)
+- **Bug:** canvas className removed `h-full w-full` in favor of `left-0 top-0` — canvas rendered at 300×150px default size instead of filling viewport
+- **Cause:** Size refactor meant to simplify CSS but broke coverage
+- **Fix:** Restored `inset-0 w-full h-full` to fix viewport fill; 1x canvas + `image-rendering: pixelated` retained
+- **Verified:** Canvas now covers viewport; time-based 30fps mobile cap and resize-on-width-change logic are correct; mobile CSS static ambience prevents compositing churn
+
 ## Review 1: full-site review (2026-10-07)
 **Findings → fixes (Opus review, Sonnet fix):**
 - Tooltip stuck after click that changes screen (trades → contact) — mouseleave never fires on unmount. Fix: TipProvider `reset={slot}` clears tip.

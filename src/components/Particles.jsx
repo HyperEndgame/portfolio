@@ -103,5 +103,5 @@ export default function Particles({ fx, near = false }) {
     raf = requestAnimationFrame(tick)
     return () => { cancelAnimationFrame(raf); removeEventListener('resize', size) }
   }, [fx, near])
-  return <canvas ref={ref} style={{ imageRendering: 'pixelated' }} className={`pointer-events-none absolute left-0 top-0 ${near ? 'z-[46] opacity-60' : 'z-10'}`} aria-hidden="true" />
+  return <canvas ref={ref} style={{ imageRendering: 'pixelated' }} className={`pointer-events-none absolute inset-0 w-full h-full ${near ? 'z-[46] opacity-60' : 'z-10'}`} aria-hidden="true" />
 }
