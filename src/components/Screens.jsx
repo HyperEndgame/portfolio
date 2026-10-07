@@ -23,6 +23,17 @@ const Title = ({ children, right, sub }) => (
     {right && <span className="text-[12px] text-[var(--gray)]">{right}</span>}
   </div>
 )
+const Section = ({ title, children }) => (
+  <div className="mt-5">
+    <h3 className="ts mb-2 text-[11px] tracking-[.25em] text-[#ffcf4a]">{title.toUpperCase()}</h3>
+    {children}
+  </div>
+)
+const Chips = ({ items }) => (
+  <div className="flex flex-wrap gap-1.5">
+    {items.map(t => <span key={t} className="row px-2 py-1 text-[12px] text-[#e0e0e0]">{t}</span>)}
+  </div>
+)
 const Hint = ({ children }) => <p className="mt-3 text-[11px] italic text-[var(--dim)]">{children}</p>
 export const Btn = ({ children, onClick, className = '' }) => (
   <button onClick={() => { play('click'); onClick?.() }} className={`mc-btn h-11 px-5 text-[14px] ${className}`}>{children}</button>
@@ -72,6 +83,17 @@ export function Profile({ go }) {
               </Item>
             ))}
           </Stagger>
+          <Section title="Favourites">
+            <div className="grid grid-cols-1 gap-x-4 sm:grid-cols-2">
+              {me.favs.map(([k, v]) => (
+                <div key={k} className="flex justify-between gap-3 border-b-2 border-white/[.07] py-1.5 text-[12px]">
+                  <span className="text-[var(--gray)]">{k}</span><span className="text-right text-[#f0f0f0]">{v}</span>
+                </div>
+              ))}
+            </div>
+          </Section>
+          <Section title="Hobbies"><Chips items={me.hobbies} /></Section>
+          <Section title="Interests"><Chips items={me.interests} /></Section>
           <Btn className="mt-5" onClick={() => go(5)}>View Journey</Btn>
         </div>
       </div>
@@ -130,6 +152,15 @@ export function Builds({ go }) {
             <span className={`text-[11px] ${p.status === 'Archived' ? 'text-[var(--gray)]' : 'text-[#55ff55]'}`}>{p.status}</span>
           </div>
           <div className="mt-0.5 text-[11px] italic text-[var(--gray)]">{p.kind}{p.when && ` · ${p.when}`}</div>
+          {p.imgs && (
+            <div className={`mt-3 grid gap-1.5 ${p.imgs.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
+              {p.imgs.map(u => (
+                <a key={u} href={u} target="_blank" rel="noreferrer" className="slot-dark block overflow-hidden">
+                  <img src={u} alt={p.title} loading="lazy" className="h-44 w-full object-cover transition-transform duration-300 hover:scale-105 sm:h-52" />
+                </a>
+              ))}
+            </div>
+          )}
           <p className="mt-2 text-[13px] leading-relaxed text-[#e0e0e0]">{p.desc}</p>
           <ul className="mt-2 space-y-1">
             {p.highlights.map(h => <li key={h} className="flex gap-2 text-[12px] text-[#d4d4d4]"><span className="text-[#ffcf4a]">▸</span>{h}</li>)}
