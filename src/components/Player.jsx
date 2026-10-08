@@ -37,7 +37,7 @@ export default function Player({ view = 'front', side = 'right', slot, center })
 // Kylo napping under the contact book (desktop only: phones have the sheet there)
 export function SleepingDog() {
   return (
-    <m.div className="pointer-events-none absolute bottom-[28px] right-[calc(50vw+270px)] z-[46] hidden aspect-[520/228] h-[min(15vh,110px)] xl:block" aria-hidden="true"
+    <m.div className="pointer-events-none absolute bottom-[28px] right-[calc(50vw+270px)] z-[46] hidden aspect-[520/228] h-[min(15vh,200px)] xl:block" aria-hidden="true"
       initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .5, delay: .2 }}>
       <Tag className="-top-8 left-[24%] -translate-x-1/2 text-[20px]">{me.pet.name}</Tag>
       <img src={me.pet.sleep} alt="" draggable="false" className="breathe h-full w-full drop-shadow-[0_10px_18px_rgba(0,0,0,.45)]" />
