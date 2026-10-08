@@ -154,7 +154,7 @@ export default function App() {
         {/* no AnimatePresence mode="wait": fast switches left it stuck on a stale or invisible panel */}
           {boxed ? (
             <m.section key={slot} data-scroll aria-label={b.name}
-              className={`${slot === 8 ? 'book' : 'panel'} scroll-y fixed inset-x-3 bottom-[150px] ${L.view ? 'top-[38vh]' : 'top-[84px]'} z-[45] p-5 md:absolute md:inset-x-auto md:bottom-auto md:top-[15vh] md:max-h-[calc(85vh-190px)] md:p-6 ${PANEL_POS[([2, 4, 8].includes(slot) ? 'wide' : '') + L.panel]}`}
+              className={`${slot === 8 ? 'book' : 'panel'} scroll-y fixed inset-x-3 bottom-[150px] ${L.view ? 'top-[38vh]' : 'top-[84px]'} z-[45] p-5 md:absolute md:inset-x-auto md:bottom-auto md:top-[15vh] md:max-h-[calc(85vh-150px)] md:p-6 md:[@media(max-height:760px)]:p-4 ${PANEL_POS[([2, 4, 8].includes(slot) ? 'wide' : '') + L.panel]}`}
               initial={{ opacity: 0, x: enter }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: .28, ease: [0.22, 1, 0.36, 1] }}>

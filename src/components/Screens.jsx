@@ -109,7 +109,7 @@ export function Skills() {
       <Stagger className="flex flex-col gap-1.5">
         {skills.map(s => (
           <Item key={s.name} tabIndex={0} {...tip({ title: `${s.name} ${s.lvl}`, lore: s.lore, color: '#55ffff' })}
-            className="row grid grid-cols-[22px_1fr_56px_26px] items-center gap-2 px-2.5 py-2 text-[12px] sm:grid-cols-[34px_1fr_1.1fr_34px] sm:gap-3 sm:px-3 sm:text-[13px]">
+            className="row grid grid-cols-[22px_1fr_56px_26px] items-center gap-2 px-2.5 py-2 text-[12px] [@media(max-height:760px)]:py-1 sm:grid-cols-[34px_1fr_1.1fr_34px] sm:gap-3 sm:px-3 sm:text-[13px]">
             <span className="font-bold text-[#ffcf4a]">{s.lvl}</span>
             <span className="truncate">{s.name}</span>
             <span className="h-[7px] bg-black/60">
@@ -156,7 +156,7 @@ export function Builds({ go }) {
             <div className={`mt-3 grid gap-1.5 ${p.imgs.length > 1 ? 'grid-cols-2' : 'grid-cols-1'}`}>
               {p.imgs.map(u => (
                 <a key={u} href={u} target="_blank" rel="noreferrer" className="slot-dark block overflow-hidden">
-                  <img src={u} alt={p.title} loading="lazy" className="h-44 w-full object-cover transition-transform duration-300 hover:scale-105 sm:h-52" />
+                  <img src={u} alt={p.title} loading="lazy" className="h-[min(208px,26vh)] w-full object-cover transition-transform duration-300 hover:scale-105" />
                 </a>
               ))}
             </div>
@@ -284,7 +284,7 @@ function LinkRow({ l }) {
       {l.href && <Ico name="external" size={15} className="opacity-50" />}
     </>
   )
-  const cls = 'row flex w-full items-center gap-3 px-1 py-3 text-left'
+  const cls = 'row flex w-full items-center gap-3 px-1 py-3 text-left [@media(max-height:760px)]:py-1.5'
   if (l.href) return <a href={l.href} target="_blank" rel="noreferrer" onClick={() => play('click')} className={cls}>{body}</a>
   if (l.copy) return <button onClick={copy} className={cls} aria-label={`Copy ${l.label}`}>{body}</button>
   return <div className={cls}>{body}</div>
@@ -298,8 +298,10 @@ export function Contact({ go }) {
       <Stagger>
         {links.map(l => <Item key={l.label}><LinkRow l={l} /></Item>)}
       </Stagger>
-      <p className="mt-3 text-right text-[11px] opacity-60">Page 1 of 1</p>
-      <Btn className="mt-3" onClick={() => go(9)}>To The End</Btn>
+      <div className="mt-3 flex items-center justify-between">
+        <Btn onClick={() => go(9)}>To The End</Btn>
+        <p className="text-[11px] opacity-60">Page 1 of 1</p>
+      </div>
     </>
   )
 }

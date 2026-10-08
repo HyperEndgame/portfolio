@@ -13,7 +13,7 @@ export default function Player({ view = 'front', side = 'right', slot, center })
   // mobile: centred in the band above the bottom sheet, or tucked top-right on menu/end
   const mob = center ? 'right-3 top-[86px] h-[18vh]' : 'left-1/2 top-[66px] h-[calc(38vh-74px)] -translate-x-1/2'
   return (
-    <div className={`pointer-events-none absolute z-20 ${mob} md:top-auto md:bottom-[118px] md:h-[66vh] md:max-h-[640px] md:translate-x-0 ${desk}`} aria-hidden="true">
+    <div className={`pointer-events-none absolute z-20 ${mob} md:top-auto md:bottom-[118px] md:h-[min(66vh,calc(100vh-250px),30vw,640px)] md:translate-x-0 ${desk}`} aria-hidden="true">
         <m.div key={view + side + (slot === 1)} className="relative h-full"
           initial={{ opacity: 0, x: side === 'left' ? -40 : 40 }}
           animate={{ opacity: 1, x: 0 }}
@@ -37,7 +37,7 @@ export default function Player({ view = 'front', side = 'right', slot, center })
 // Kylo napping under the contact book (desktop only: phones have the sheet there)
 export function SleepingDog() {
   return (
-    <m.div className="pointer-events-none absolute bottom-[112px] left-[22vw] z-[46] hidden aspect-[520/228] h-[15vh] max-h-[160px] md:block" aria-hidden="true"
+    <m.div className="pointer-events-none absolute bottom-[28px] right-[calc(50vw+270px)] z-[46] hidden aspect-[520/228] h-[min(15vh,110px)] md:block" aria-hidden="true"
       initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .5, delay: .2 }}>
       <Tag className="-top-8 left-[24%] -translate-x-1/2 text-[20px]">{me.pet.name}</Tag>
       <img src={me.pet.sleep} alt="" draggable="false" className="breathe h-full w-full drop-shadow-[0_10px_18px_rgba(0,0,0,.45)]" />
