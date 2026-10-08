@@ -27,6 +27,7 @@ const TOASTS = {
   4: { icon: I.chest, title: 'Taking Inventory' },
   9: { icon: I.pearl, title: 'The End?' },
   all: { icon: I.compass, title: 'Adventuring Time' },
+  phone: { icon: I.pc, head: 'Tip', title: 'Best experienced on desktop', ms: 6000 },
 }
 
 function useKeys(go, cycle, toggleSound, toggleDebug) {
@@ -88,7 +89,7 @@ function usePreload() {
 // advancement toasts for exploring new screens
 function useProgress(slot) {
   const [seen, setSeen] = useState(() => new Set([1]))
-  const [toast, setToast] = useState(null)
+  const [toast, setToast] = useState(() => innerWidth < 768 ? TOASTS.phone : null)
   useEffect(() => {
     if (seen.has(slot)) return
     const next = new Set(seen).add(slot)
@@ -99,7 +100,7 @@ function useProgress(slot) {
   }, [slot, seen])
   useEffect(() => {
     if (!toast) return
-    const id = setTimeout(() => setToast(null), 3800)
+    const id = setTimeout(() => setToast(null), toast.ms || 3800)
     return () => clearTimeout(id)
   }, [toast])
   return { toast }

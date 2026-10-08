@@ -129,7 +129,7 @@ export function Toast({ toast }) {
           initial={{ x: 340 }} animate={{ x: 0 }} exit={{ x: 340 }} transition={{ type: 'spring', stiffness: 260, damping: 26 }}>
           <div className="slot grid h-11 w-11 shrink-0 place-items-center"><Pixel icon={toast.icon} size={28} /></div>
           <div className="text-[13px]">
-            <div className="text-[#ffff55]">Advancement Made!</div>
+            <div className="text-[#ffff55]">{toast.head || 'Advancement Made!'}</div>
             <div>{toast.title}</div>
           </div>
         </m.div>
