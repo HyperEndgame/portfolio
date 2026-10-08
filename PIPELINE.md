@@ -179,3 +179,13 @@ Graphify: none yet.
 ## Kylo tag/position tweak (review, 2026-10-07, commit 6138fcf)
 **Change:** Player.jsx only. Slot-3 Kylo tag moved to `left-[23%]` over his head. SleepingDog → `left-[22vw]`, `h-[15vh] max-h-[160px]`, `z-[46]` (above contact book z-45), tag `left-[24%]`.
 **Haiku findings:** None breaking. Tag positioned inside absolute containers (valid containing block). `z-[46]` arbitrary class valid. Visually verified per commit.
+
+## Feature 9: short-viewport fit (2026-10-08, commit 151af65)
+**Plan (Opus):** Short laptop screens (<760px tall) clip the player, Kylo's nap, and panels. Cap player height by viewport; move SleepingDog to bottom-right of center; panel max-h 85vh-150px; tighter padding/rows under 760px via arbitrary `[@media(max-height:760px)]` variants; Contact button/page on one row.
+**Code:** Player.jsx (`md:h-[min(66vh,calc(100vh-250px),30vw,640px)]`, SleepingDog `bottom-[28px] right-[calc(50vw+270px)] h-[min(15vh,110px)]`), App.jsx (panel max-h, `md:[@media(max-height:760px)]:p-4`), Screens.jsx (skill/link row py, build img `h-[min(208px,26vh)]`, Contact flex row).
+**Review (Haiku):**
+- Build passes (276 KB JS, 29 KB CSS). All new arbitrary classes emitted. `md:[@media]:p-4` sorts after `md:p-6`, so it wins under 760px.
+- Mobile (<768px) unaffected by md-gated changes. Ungated: skill/link rows tighten under 760px tall (short phones only); build image now up to 208px on phones (was 176px). Not breaking.
+- Desktop behavior change: `30vw` cap shrinks player at 1440x900 from ~594px to ~432px. Intentional? Confirm.
+- Possible regression: SleepingDog right edge sits at `50vw-270px`. At 768px width it is clipped off the left edge (main overflow-hidden). Fine at ~1280+. Check tablet/narrow desktop.
+- None breaking. No source edits by reviewer.
